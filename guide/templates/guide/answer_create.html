@@ -1,0 +1,11 @@
+<h1>{{ question.step }}</h1>
+<div>{{ question.number }}. {{ question.text }}</div>
+{% for answer in answers %}
+    {{ answer }}
+    <hr>
+{% endfor %}
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Добавить">
+</form>

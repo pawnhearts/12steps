@@ -1,9 +1,9 @@
-<h1>{{ object }}</h1>
+<h1>{{ step }}</h1>
 <div>
-    {{ object.text }}
+    {{ step.text }}
 </div>
 <ol>
-{% for question in object.question_set.all.with_answer_count %}
+{% for question in object_list %}
     <li {% if question.answer_count %}style="background-color: cadetblue;"{% endif %}>
     <a href="/questions/{{ question.pk }}/">{{ question.text }}</a>
     Примеров: {{ question.answer_count }}
