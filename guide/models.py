@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models import Count, Subquery, OuterRef
+from django.db.models import Count, Subquery, OuterRef, Q
 from ordered_model.models import OrderedModel
 
 
@@ -67,8 +67,8 @@ class Section(models.Model):
 
 class QuestionQuerySet(models.QuerySet):
     def with_answer_count(self, user):
-        sq = Subquery(Answer.objects.filter(question=OuterRef('pk'), user=user).values('id'))
-        return self.annotate(answer_count=Count(sq))
+        # sq = Subquery(Answer.objects.filter(question=OuterRef('pk'), user=user).values('id'))
+        return self.annotate(answer_count=Count('answer_set', filter=Q(user=user)))
 
 
 class Question(models.Model):
