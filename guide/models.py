@@ -6,8 +6,9 @@ from ordered_model.models import OrderedModel
 
 class StepQuerySet(models.QuerySet):
     def with_answer_count(self, user):
-        sq = Subquery(Answer.objects.filter(question__section__step=OuterRef('pk'), user=user).values('id'))
-        return self.annotate(answer_count=Count(sq))
+        return self.annotate(
+            answer_count=Count('section__question__answer', filter=Q(section__question__answer__user=user))
+        )
 
 
 class Programs(models.TextChoices):
@@ -39,8 +40,7 @@ class Step(models.Model):
 
 class SectionQuerySet(models.QuerySet):
     def with_answer_count(self, user):
-        sq = Subquery(Answer.objects.filter(question__section=OuterRef('pk'), user=user).values('id'))
-        return self.annotate(answer_count=Count(sq))
+        return self.annotate(answer_count=Count('quesion__answer', filter=Q(question__answer__user=user)))
 
 
 class Section(models.Model):
@@ -67,7 +67,6 @@ class Section(models.Model):
 
 class QuestionQuerySet(models.QuerySet):
     def with_answer_count(self, user):
-        # sq = Subquery(Answer.objects.filter(question=OuterRef('pk'), user=user).values('id'))
         return self.annotate(answer_count=Count('answer', filter=Q(answer__user=user)))
 
 
