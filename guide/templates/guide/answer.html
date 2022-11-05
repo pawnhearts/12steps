@@ -7,7 +7,7 @@
     <dt class="col-sm-3">Чувства</dt>
     <dd class="col-sm-9">
         {% for feeling in answer.feelings.all %}
-        {{ feeling }}
+        {{ feeling }}{% if not forloop.last %},{% endif %}
     {% endfor %}
     {{ answer.feelings2 }}
     </dd>
