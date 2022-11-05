@@ -1,0 +1,9 @@
+<h1>{{ object.order }} {{ object.title }}</h1>
+<div>
+    {{ object.text }}
+</div>
+<ol>
+{% for question in object.questions %}
+    <li><a href="/questions/{{ question.pk }}/">{{ question.text }}</a></li>
+{% endfor %}
+</ol>

@@ -18,6 +18,7 @@ class Step(OrderedModel):
 
 class Question(OrderedModel):
     step = models.ForeignKey(Step, verbose_name='Шаг', on_delete=models.CASCADE)
+    number = models.PositiveSmallIntegerField('Номер')
     text = models.TextField('Текст вопроса', blank=True, null=True)
 
     def __str__(self):
