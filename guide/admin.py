@@ -1,6 +1,6 @@
 from django.contrib import admin
 from ordered_model.admin import OrderedModelAdmin
-from guide.models import Step, Question, Answer, Feeling
+from guide.models import Step, Question, Answer, Feeling, Section
 
 
 # @admin.register(Step)
@@ -12,10 +12,16 @@ class StepAdmin(admin.ModelAdmin):
     list_filter = ('program',)
 
 
+@admin.register(Section)
+class SectionAdmin(admin.ModelAdmin):
+    list_display = ('number', 'title')
+    list_filter = ('step__program', 'step')
+
+
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
-    list_display = ('step', 'number')
-    list_filter = ('step__program', 'step',)
+    list_display = ('__str__',)
+    list_filter = ('section__step__program', 'section__step', 'section')
 
 
 @admin.register(Feeling)

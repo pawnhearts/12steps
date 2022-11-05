@@ -37,6 +37,34 @@ class Step(models.Model):
         ordering = ['number']
 
 
+class SectionQuerySet(models.QuerySet):
+    def with_answer_count(self, user):
+        sq = Subquery(Answer.objects.filter(question__section=OuterRef('pk'), user=user).values('id'))
+        return self.annotate(answer_count=Count(sq))
+
+
+class Section(models.Model):
+    objects = SectionQuerySet.as_manager()
+
+    step = models.ForeignKey(Step, verbose_name='Шаг', on_delete=models.CASCADE)
+    number = models.PositiveSmallIntegerField('Номер', blank=True)
+    title = models.CharField('Название', max_length=256)
+    text = models.TextField('Текст', blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.step.get_program_display()}. Шаг {self.step.number}. {self.title}'
+
+    def save(self, **kwargs):
+        if not self.number:
+            self.number = (Section.objects.filter(step=self.step).aggregate(n=models.Max('number'))['n'] or 0) + 1
+        super().save(**kwargs)
+
+    class Meta:
+        verbose_name = "Вопрос"
+        verbose_name_plural = "Вопросы"
+        ordering = ['number']
+
+
 class QuestionQuerySet(models.QuerySet):
     def with_answer_count(self, user):
         sq = Subquery(Answer.objects.filter(question=OuterRef('pk'), user=user).values('id'))
@@ -46,23 +74,23 @@ class QuestionQuerySet(models.QuerySet):
 class Question(models.Model):
     objects = QuestionQuerySet.as_manager()
 
-    step = models.ForeignKey(Step, verbose_name='Шаг', on_delete=models.CASCADE)
+    section = models.ForeignKey(Section, verbose_name='Раздел', on_delete=models.CASCADE)
     number = models.PositiveSmallIntegerField('Номер', blank=True)
     # title = models.CharField('Заголовок', max_length=512, blank=True, null=True)
     text = models.TextField('Текст вопроса', blank=True, null=True)
 
     def __str__(self):
-        return f'{self.step.get_program_display()}. Шаг {self.step.number}. Вопрос {self.number}'
+        return f'{self.section.step.get_program_display()}. Шаг {self.section.step.number}. Раздел {self.section.title}. Вопрос {self.number}'
 
     def save(self, **kwargs):
         if not self.number:
-            self.number = (Question.objects.filter(step=self.step).aggregate(n=models.Max('number'))['n'] or 0) + 1
+            self.number = (Question.objects.filter(section=self.section).aggregate(n=models.Max('number'))['n'] or 0) + 1
         super().save(**kwargs)
 
     class Meta:
         verbose_name = "Вопрос"
         verbose_name_plural = "Вопросы"
-        ordering = ['number']
+        ordering = ['section__number', 'number']
 
 
 class Feeling(models.Model):

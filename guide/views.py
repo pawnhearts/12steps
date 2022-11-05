@@ -25,7 +25,7 @@ class QuestionListView(LoginRequiredMixin, ListView):
         return context
 
     def get_queryset(self):
-        return super().get_queryset().filter(step_id=self.kwargs.get('pk')).with_answer_count(self.request.user)
+        return super().get_queryset().filter(section__step_id=self.kwargs.get('pk')).with_answer_count(self.request.user)
 
 
 class AnswerCreateView(LoginRequiredMixin, CreateView):
