@@ -1,3 +1,4 @@
+from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, CreateView
@@ -7,6 +8,12 @@ from guide.models import Step, Answer, Question
 
 class StepListView(LoginRequiredMixin, ListView):
     model = Step
+
+    def get_queryset(self):
+        program = self.kwargs.get('program').upper()
+        if program not in ('AA', 'NA'):
+            raise Http404
+        return super.get_queryset().filter(program=program).with_answer_count(self.request.user)
 
 
 class QuestionListView(LoginRequiredMixin, ListView):

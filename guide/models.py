@@ -10,19 +10,26 @@ class StepQuerySet(models.QuerySet):
         return self.annotate(answer_count=Count(sq))
 
 
-class Step(OrderedModel):
+class Programs(models.TextChoices):
+    NA = 'NA', 'АН'
+    AA = 'AA', 'АА'
+
+
+class Step(models.Model):
     objects = StepQuerySet.as_manager()
 
+    program = models.CharField('Программа', max_length=4, choices=Programs.choices, default=Programs.NA)
+    number = models.PositiveSmallIntegerField('Номер')
     title = models.CharField('Название', max_length=255)
     text = models.TextField('Текст', blank=True, null=True)
 
     def __str__(self):
-        return f'{self.order + 1}. {self.title}'
+        return f'{self.number}. {self.title}'
 
     class Meta:
         verbose_name = "Шаг"
         verbose_name_plural = "Шаги"
-        ordering = ['order']
+        ordering = ['number']
 
 
 class QuestionQuerySet(models.QuerySet):

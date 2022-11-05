@@ -3,15 +3,19 @@ from ordered_model.admin import OrderedModelAdmin
 from guide.models import Step, Question, Answer, Feeling
 
 
+# @admin.register(Step)
+# class StepAdmin(OrderedModelAdmin):
+#     list_display = ('title', 'move_up_down_links')
 @admin.register(Step)
-class StepAdmin(OrderedModelAdmin):
-    list_display = ('title', 'move_up_down_links')
+class StepAdmin(admin.ModelAdmin):
+    list_display = ('number', 'title')
+    list_filter = ('program',)
 
 
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
     list_display = ('step', 'number')
-    list_filter = ('step',)
+    list_filter = ('step__program', 'step',)
 
 
 @admin.register(Feeling)
