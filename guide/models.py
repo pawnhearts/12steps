@@ -52,7 +52,7 @@ class Question(models.Model):
     text = models.TextField('Текст вопроса', blank=True, null=True)
 
     def __str__(self):
-        return f'Шаг {self.step.number}. Вопрос {self.number}'
+        return f'{self.step}. Вопрос {self.number}'
 
     def save(self, **kwargs):
         if not self.number:
