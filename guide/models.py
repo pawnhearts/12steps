@@ -19,7 +19,7 @@ class Step(models.Model):
     objects = StepQuerySet.as_manager()
 
     program = models.CharField('Программа', max_length=4, choices=Programs.choices, default=Programs.NA)
-    number = models.PositiveSmallIntegerField('Номер')
+    number = models.PositiveSmallIntegerField('Номер', blank=True)
     title = models.CharField('Название', max_length=255)
     text = models.TextField('Текст', blank=True, null=True)
 
@@ -47,7 +47,7 @@ class Question(models.Model):
     objects = QuestionQuerySet.as_manager()
 
     step = models.ForeignKey(Step, verbose_name='Шаг', on_delete=models.CASCADE)
-    number = models.PositiveSmallIntegerField('Номер')
+    number = models.PositiveSmallIntegerField('Номер', blank=True)
     # title = models.CharField('Заголовок', max_length=512, blank=True, null=True)
     text = models.TextField('Текст вопроса', blank=True, null=True)
 
