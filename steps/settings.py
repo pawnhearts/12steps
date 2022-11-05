@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-fruf=lomae%3xjyv!6+2=9k7ulm8=h9(*m-kgb4ii)o8j0r#-(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_registration",
     "ordered_model",
+
+    "guide",
 ]
 
 MIDDLEWARE = [

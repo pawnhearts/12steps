@@ -8,7 +8,7 @@ class Step(OrderedModel):
     text = models.TextField('Текст', blank=True, null=True)
 
     def __str__(self):
-        return f'{self.order}. {self.title}'
+        return f'{self.order + 1}. {self.title}'
 
     class Meta:
         verbose_name = "Шаг"
@@ -16,18 +16,23 @@ class Step(OrderedModel):
         ordering = ['order']
 
 
-class Question(OrderedModel):
+class Question(models.Model):
     step = models.ForeignKey(Step, verbose_name='Шаг', on_delete=models.CASCADE)
     number = models.PositiveSmallIntegerField('Номер')
     text = models.TextField('Текст вопроса', blank=True, null=True)
 
     def __str__(self):
-        return f'{self.step.order}. {self.order}'
+        return f'{self.step.order+1}. {self.number}'
+
+    def save(self, **kwargs):
+        if not self.number:
+            self.number = (Question.objects.filter(step=self.step).aggregate(n=models.Max('number'))['n'] or 0) + 1
+        super().save(**kwargs)
 
     class Meta:
         verbose_name = "Вопрос"
         verbose_name_plural = "Вопросы"
-        ordering = ['order']
+        ordering = ['number']
 
 
 class Feeling(models.Model):
