@@ -47,7 +47,7 @@ class AnswerCreateView(LoginRequiredMixin, CreateView):
         form.save_m2m()
         return HttpResponseRedirect(self.request.path)
 
-    def get_form(self, form_class):
-        form = super().get_form(form_class)
+    def get_form(self, *args, **kwargs):
+        form = super().get_form(*args, **kwargs)
         form.fields['feelings'].widget = forms.CheckboxSelectMultiple()
         return form
