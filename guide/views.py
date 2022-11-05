@@ -1,15 +1,15 @@
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, CreateView, DetailView
+from django.views.generic import ListView, CreateView
 
 from guide.models import Step, Answer, Question
 
 
-class StepListView(ListView):
+class StepListView(LoginRequiredMixin, ListView):
     model = Step
 
 
-class QuestionListView(ListView):
+class QuestionListView(LoginRequiredMixin, ListView):
     model = Question
 
     def get_context_data(self, **kwargs):
