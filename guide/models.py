@@ -104,6 +104,7 @@ class Feeling(models.Model):
 
 
 class Answer(models.Model):
+    created = models.DateTimeField('Дата и время', auto_now_add=True, editable=False)
     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
     question = models.ForeignKey(Question, verbose_name='Вопрос', on_delete=models.CASCADE)
     situation = models.TextField('Ситуация', blank=True, null=True)
@@ -117,3 +118,4 @@ class Answer(models.Model):
     class Meta:
         verbose_name = "Ответ"
         verbose_name_plural = "Ответы"
+        ordering = ['created']
