@@ -1,9 +1,9 @@
-{# Load the tag library #}
-{% load bootstrap5 %}
+{% extends 'base.html' %}
 
-{# Load CSS and JavaScript #}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
 <h1><a href="/steps/{{ question.step.program }}/">{{ question.step }}</a></h1>
 
 <div>{{ question.number }}. {{ question.text }}</div>
@@ -13,10 +13,9 @@
 {% endfor %}
 <form method="post">
     {% csrf_token %}
-      {% bootstrap_form form %}
-      {% buttons %}
-    <button type="submit" class="btn btn-primary">
+      {{ form|crispy }}
+    <button type="submit" class="btn btn-success">
       Боже, сохрани
     </button>
-  {% endbuttons %}
 </form>
+{% endblock %}

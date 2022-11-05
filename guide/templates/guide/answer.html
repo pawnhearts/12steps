@@ -1,9 +1,13 @@
-<div>
-    <p>Ситуация: {{ answer.situation }}</p>
-    <p>Мысли: {{ answer.thoughts }}</p>
-    <p>Чувства:
+<dl class="row">
+
+    <dt class="col-sm-3">Ситуация</dt>
+    <dd class="col-sm-9">{{ answer.situation }}</dd>
+    <dt class="col-sm-3">Мысли</dt>
+    <dd class="col-sm-9">{{ answer.thoughts }}</dd>
+    <dt class="col-sm-3">Чувства</dt>
+    <dd class="col-sm-9">
         {% for feeling in answer.feelings.all %}
         {{ feeling }}
     {% endfor %}
-    </p>
-</div>
+    </dd>
+</dl>
