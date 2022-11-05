@@ -1,3 +1,7 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
 <h1>{{ step }}</h1>
 <div>
     {{ step.text }}
@@ -15,3 +19,4 @@
 {% endfor %}
 </ol>
 {% endfor %}
+{% endblock %}
