@@ -49,5 +49,5 @@ class AnswerCreateView(LoginRequiredMixin, CreateView):
 
     def get_form(self, *args, **kwargs):
         form = super().get_form(*args, **kwargs)
-        form.fields['feelings'].widget = forms.CheckboxSelectMultiple()
+        form.fields['feelings'].widget = forms.CheckboxSelectMultiple
         return form
