@@ -24,7 +24,7 @@ class Step(models.Model):
     text = models.TextField('Текст', blank=True, null=True)
 
     def __str__(self):
-        return f'{self.number}. {self.title}'
+        return f'{self.get_program_display()}. Шаг {self.number}. {self.title}'
 
     def save(self, **kwargs):
         if not self.number:
