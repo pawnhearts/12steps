@@ -4,9 +4,9 @@
 
 {% block content %}
 
-<h1><a class="badge badge-secondary" href="/steps/{{ question.step.program }}/">{{ question.step }}</a></h1>
+<h1><a class="badge badge-secondary" href="/steps/{{ question.section.step.program }}/">{{ question.section }}</a></h1>
 
-<div>{{ question.number }}. {{ question.text }}</div>
+    <h2><span class="badge badge-secondary">{{ question.number }}.</span> {{ question.text }}</h2>
 <ul class="list-group">
     {% for answer in answers %}
         {% include 'guide/answer.html' with answer=answer %}
