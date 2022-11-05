@@ -13,7 +13,7 @@ class StepListView(LoginRequiredMixin, ListView):
         program = self.kwargs.get('program').upper()
         if program not in ('AA', 'NA'):
             raise Http404
-        return super.get_queryset().filter(program=program).with_answer_count(self.request.user)
+        return super().get_queryset().filter(program=program).with_answer_count(self.request.user)
 
 
 class QuestionListView(LoginRequiredMixin, ListView):
@@ -25,7 +25,7 @@ class QuestionListView(LoginRequiredMixin, ListView):
         return context
 
     def get_queryset(self):
-        return super.get_queryset().filter(step_id=self.kwargs.get('pk')).with_answer_count(self.request.user)
+        return super().get_queryset().filter(step_id=self.kwargs.get('pk')).with_answer_count(self.request.user)
 
 
 class AnswerCreateView(LoginRequiredMixin, CreateView):
