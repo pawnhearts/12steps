@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_registration",
     "ordered_model",
+    "django_extensions",
 
     "guide",
 ]

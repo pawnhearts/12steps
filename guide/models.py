@@ -1,9 +1,18 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models import Count, Subquery, OuterRef
 from ordered_model.models import OrderedModel
 
 
+class StepQuerySet(models.QuerySet):
+    def with_answer_count(self, user):
+        sq = Subquery(Answer.objects.filter(question__step=OuterRef('pk'), user=user).values('id'))
+        return self.annotate(answer_count=Count(sq))
+
+
 class Step(OrderedModel):
+    objects = StepQuerySet.as_manager()
+
     title = models.CharField('Название', max_length=255)
     text = models.TextField('Текст', blank=True, null=True)
 
@@ -16,13 +25,22 @@ class Step(OrderedModel):
         ordering = ['order']
 
 
+class QuestionQuerySet(models.QuerySet):
+    def with_answer_count(self, user):
+        sq = Subquery(Answer.objects.filter(question=OuterRef('pk'), user=user).values('id'))
+        return self.annotate(answer_count=Count(sq))
+
+
 class Question(models.Model):
+    objects = QuestionQuerySet.as_manager()
+
     step = models.ForeignKey(Step, verbose_name='Шаг', on_delete=models.CASCADE)
     number = models.PositiveSmallIntegerField('Номер')
+    # title = models.CharField('Заголовок', max_length=512, blank=True, null=True)
     text = models.TextField('Текст вопроса', blank=True, null=True)
 
     def __str__(self):
-        return f'{self.step.order+1}. {self.number}'
+        return f'Шаг {self.step.order+1}. Вопрос {self.number}'
 
     def save(self, **kwargs):
         if not self.number:

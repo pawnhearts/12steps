@@ -3,7 +3,10 @@
     {{ object.text }}
 </div>
 <ol>
-{% for question in object.question_set.all %}
-    <li><a href="/questions/{{ question.pk }}/">{{ question.text }}</a></li>
+{% for question in object.question_set.all.with_answer_count %}
+    <li {% if question.answer_count %}style="background-color: cadetblue;"{% endif %}>
+    <a href="/questions/{{ question.pk }}/">{{ question.text }}</a>
+    Примеров: {{ question.answer_count }}
+    </li>
 {% endfor %}
 </ol>
