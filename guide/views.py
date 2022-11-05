@@ -1,3 +1,4 @@
+from django import forms
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -45,3 +46,8 @@ class AnswerCreateView(LoginRequiredMixin, CreateView):
         self.object.save()
         form.save_m2m()
         return HttpResponseRedirect(self.request.path)
+
+    def get_form(self, form_class):
+        form = super().get_form(form_class)
+        form.fields['feelings'].widget = forms.CheckboxSelectMultiple()
+        return form
