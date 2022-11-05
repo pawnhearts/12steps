@@ -31,7 +31,7 @@ class QuestionListView(LoginRequiredMixin, ListView):
 
 class AnswerCreateView(LoginRequiredMixin, CreateView):
     model = Answer
-    fields = ['situation', 'thoughts', 'feelings', 'feelings2', 'actions']
+    fields = ['situation', 'thoughts', 'feelings2', 'feelings', 'actions']
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
