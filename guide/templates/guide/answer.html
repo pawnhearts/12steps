@@ -1,0 +1,9 @@
+<div>
+    <p>Ситуация: {{ answer.situation }}</p>
+    <p>Мысли: {{ answer.thoughts }}</p>
+    <p>Чувства:
+        {% for feeling in answer.feelings %}
+        {{ feeling }}
+    {% endfor %}
+    </p>
+</div>
