@@ -1,0 +1,8 @@
+<a href="/steps/">Шаги</a>
+{% if not user.is_authenticated %}
+<a href="/accounts/register/">Регистрация</a>
+<a href="/accounts/login/">Вход</a>
+{% else %}
+    {{ user }}
+    <a href="/accounts/logout/">Выход</a>
+{% endif %}
