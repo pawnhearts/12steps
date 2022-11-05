@@ -23,3 +23,4 @@ class FeelingAdmin(admin.ModelAdmin):
 class AnswerAdmin(admin.ModelAdmin):
     list_display = ('user', 'question')
     list_filter = ('user',)
+    filter_horizontal = ('feelings',)
