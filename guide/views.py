@@ -43,4 +43,5 @@ class AnswerCreateView(LoginRequiredMixin, CreateView):
         self.object.question = get_object_or_404(Question, pk=self.kwargs.get('pk'))
         self.object.user = self.request.user
         self.object.save()
+        form.save_m2m()
         return HttpResponseRedirect(self.request.path)
