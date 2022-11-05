@@ -1,4 +1,4 @@
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, CreateView
@@ -39,6 +39,8 @@ class AnswerCreateView(LoginRequiredMixin, CreateView):
         return context
 
     def form_valid(self, form):
-        self.instance.question = get_object_or_404(Question, pk=self.kwargs.get('pk'))
-        self.instance.user = self.request.user
-        return super().form_valid(form)
+        self.object = form.save(commit=False)
+        self.object.question = get_object_or_404(Question, pk=self.kwargs.get('pk'))
+        self.object.user = self.request.user
+        self.object.save()
+        return HttpResponseRedirect(self.request.path)
