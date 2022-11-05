@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, CreateView
 
-from guide.models import Step, Answer, Question
+from guide.models import Step, Answer, Question, Feeling
 
 
 class StepListView(LoginRequiredMixin, ListView):
@@ -46,3 +46,10 @@ class AnswerCreateView(LoginRequiredMixin, CreateView):
         self.object.save()
         form.save_m2m()
         return HttpResponseRedirect(self.request.path)
+
+    def get_form(self, *args, **kwargs):
+        form = super().get_form(*args, **kwargs)
+        form.fields['feelings'] = forms.ModelMultipleChoiceField(
+            queryset=Feeling.objects.all(), widget=forms.CheckboxSelectMultiple
+        )
+        return form
