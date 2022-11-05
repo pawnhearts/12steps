@@ -2,11 +2,15 @@
 <div>
     {{ step.text }}
 </div>
+{% regroup object_list by section as sections %}
+{% for section in sections %}
+<h2>{{ section.grouper }}</h2>
 <ol>
-{% for question in object_list %}
+{% for question in section.list %}
     <li {% if question.answer_count %}style="background-color: cadetblue;"{% endif %}>
     <a href="/question/{{ question.pk }}/">{{ question.text }}</a>
     Примеров: {{ question.answer_count }}
     </li>
 {% endfor %}
 </ol>
+{% endfor %}

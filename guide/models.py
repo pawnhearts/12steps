@@ -6,7 +6,7 @@ from ordered_model.models import OrderedModel
 
 class StepQuerySet(models.QuerySet):
     def with_answer_count(self, user):
-        sq = Subquery(Answer.objects.filter(question__step=OuterRef('pk'), user=user).values('id'))
+        sq = Subquery(Answer.objects.filter(question__section__step=OuterRef('pk'), user=user).values('id'))
         return self.annotate(answer_count=Count(sq))
 
 
@@ -19,7 +19,7 @@ class Step(models.Model):
     objects = StepQuerySet.as_manager()
 
     program = models.CharField('Программа', max_length=4, choices=Programs.choices, default=Programs.NA)
-    number = models.PositiveSmallIntegerField('Номер', blank=True)
+    number = models.PositiveSmallIntegerField('Номер', blank=True, db_index=True)
     title = models.CharField('Название', max_length=255)
     text = models.TextField('Текст', blank=True, null=True)
 
@@ -47,7 +47,7 @@ class Section(models.Model):
     objects = SectionQuerySet.as_manager()
 
     step = models.ForeignKey(Step, verbose_name='Шаг', on_delete=models.CASCADE)
-    number = models.PositiveSmallIntegerField('Номер', blank=True)
+    number = models.PositiveSmallIntegerField('Номер', blank=True, db_index=True)
     title = models.CharField('Название', max_length=256)
     text = models.TextField('Текст', blank=True, null=True)
 
@@ -62,7 +62,7 @@ class Section(models.Model):
     class Meta:
         verbose_name = "Раздел"
         verbose_name_plural = "Разделы"
-        ordering = ['number']
+        ordering = ['step__number', 'number']
 
 
 class QuestionQuerySet(models.QuerySet):
@@ -75,7 +75,7 @@ class Question(models.Model):
     objects = QuestionQuerySet.as_manager()
 
     section = models.ForeignKey(Section, verbose_name='Раздел', on_delete=models.CASCADE)
-    number = models.PositiveSmallIntegerField('Номер', blank=True)
+    number = models.PositiveSmallIntegerField('Номер', blank=True, db_index=True)
     # title = models.CharField('Заголовок', max_length=512, blank=True, null=True)
     text = models.TextField('Текст вопроса', blank=True, null=True)
 
@@ -90,7 +90,7 @@ class Question(models.Model):
     class Meta:
         verbose_name = "Вопрос"
         verbose_name_plural = "Вопросы"
-        ordering = ['section__number', 'number']
+        ordering = ['section__step__number', 'section__number', 'number']
 
 
 class Feeling(models.Model):
