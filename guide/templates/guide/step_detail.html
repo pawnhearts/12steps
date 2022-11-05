@@ -3,7 +3,7 @@
     {{ object.text }}
 </div>
 <ol>
-{% for question in object.question_set %}
+{% for question in object.question_set.all %}
     <li><a href="/questions/{{ question.pk }}/">{{ question.text }}</a></li>
 {% endfor %}
 </ol>
