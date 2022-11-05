@@ -4,5 +4,5 @@ from guide import views
 
 urlpatterns = [
     path('/steps/', login_required(views.StepListView.as_view()), name='step-list'),
-    path('/steps/<pk:int>/', login_required(views.StepDetailView.as_view()), name='step-detail'),
+    path('/steps/<int:pk>/', login_required(views.StepDetailView.as_view()), name='step-detail'),
 ]
