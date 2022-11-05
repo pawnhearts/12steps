@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django_registration",
     "ordered_model",
     "django_extensions",
+    "bootstrap5",
 
     "guide",
 ]

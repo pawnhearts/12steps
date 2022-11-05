@@ -1,4 +1,11 @@
+{# Load the tag library #}
+{% load bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
 <h1><a href="/steps/{{ question.step.program }}/">{{ question.step }}</a></h1>
+
 <div>{{ question.number }}. {{ question.text }}</div>
 {% for answer in answers %}
     {% include 'guide/answer.html' with answer=answer %}
@@ -6,6 +13,10 @@
 {% endfor %}
 <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Добавить">
+      {% bootstrap_form form %}
+      {% buttons %}
+    <button type="submit" class="btn btn-primary">
+      Боже, сохрани
+    </button>
+  {% endbuttons %}
 </form>
