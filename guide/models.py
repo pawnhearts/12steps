@@ -60,8 +60,8 @@ class Section(models.Model):
         super().save(**kwargs)
 
     class Meta:
-        verbose_name = "Вопрос"
-        verbose_name_plural = "Вопросы"
+        verbose_name = "Раздел"
+        verbose_name_plural = "Разделы"
         ordering = ['number']
 
 
