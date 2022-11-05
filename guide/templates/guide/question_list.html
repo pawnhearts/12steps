@@ -5,6 +5,7 @@
 {% regroup object_list by section as sections %}
 {% for section in sections %}
 <h2>{{ section.grouper }}</h2>
+    <p>{{ section.grouper.text }}</p>
 <ol>
 {% for question in section.list %}
     <li {% if question.answer_count %}style="background-color: cadetblue;"{% endif %}>
