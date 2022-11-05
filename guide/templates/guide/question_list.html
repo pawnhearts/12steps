@@ -5,7 +5,7 @@
 <ol>
 {% for question in object_list %}
     <li {% if question.answer_count %}style="background-color: cadetblue;"{% endif %}>
-    <a href="/questions/{{ question.pk }}/">{{ question.text }}</a>
+    <a href="/question/{{ question.pk }}/">{{ question.text }}</a>
     Примеров: {{ question.answer_count }}
     </li>
 {% endfor %}
