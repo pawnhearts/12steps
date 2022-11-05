@@ -9,7 +9,9 @@
         {% for feeling in answer.feelings.all %}
         {{ feeling }}{% if not forloop.last %},{% endif %}
     {% endfor %}
+    {% if answer.feelings2 %}
     {{ answer.feelings2 }}
+    {% endif %}
     </dd>
     <dt class="col-sm-3">Действия</dt>
     <dd class="col-sm-9">{{ answer.actions }}</dd>
