@@ -26,6 +26,11 @@ class Step(models.Model):
     def __str__(self):
         return f'{self.number}. {self.title}'
 
+    def save(self, **kwargs):
+        if not self.number:
+            self.number = (Step.objects.filter(program=self.program).aggregate(n=models.Max('number'))['n'] or 0) + 1
+        super().save(**kwargs)
+
     class Meta:
         verbose_name = "Шаг"
         verbose_name_plural = "Шаги"
