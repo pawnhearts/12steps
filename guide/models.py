@@ -68,7 +68,7 @@ class Section(models.Model):
 class QuestionQuerySet(models.QuerySet):
     def with_answer_count(self, user):
         # sq = Subquery(Answer.objects.filter(question=OuterRef('pk'), user=user).values('id'))
-        return self.annotate(answer_count=Count('answer', filter=Q(user=user)))
+        return self.annotate(answer_count=Count('answer', filter=Q(answer__user=user)))
 
 
 class Question(models.Model):
