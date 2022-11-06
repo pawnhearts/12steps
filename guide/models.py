@@ -1,7 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models import Count, Subquery, OuterRef, Q
-from ordered_model.models import OrderedModel
+from django.db.models import Count, Q
 
 
 class StepQuerySet(models.QuerySet):
@@ -104,7 +103,7 @@ class Feeling(models.Model):
 
 
 class Answer(models.Model):
-    created = models.DateTimeField('Дата и время', auto_now_add=True, editable=False)
+    created = models.DateTimeField('Дата и время', auto_now_add=True, editable=False, db_index=True)
     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
     question = models.ForeignKey(Question, verbose_name='Вопрос', on_delete=models.CASCADE)
     situation = models.TextField('Ситуация', blank=True, null=True)
@@ -120,3 +119,22 @@ class Answer(models.Model):
         verbose_name = "Ответ"
         verbose_name_plural = "Ответы"
         ordering = ['created']
+
+
+class AnswerStatuses(models.TextChoices):
+    work = 'WORK', 'В работе'
+    completed = 'COMPLETED', 'Завершен'
+
+
+class AnswerStatus(models.Model):
+    created = models.DateTimeField('Дата и время', auto_now_add=True, editable=False)
+    user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, verbose_name='Вопрос', on_delete=models.CASCADE)
+    status = models.CharField('Статус', max_length=16, choices=AnswerStatuses.choices, default=AnswerStatuses.work)
+
+    def __str__(self):
+        return self.get_status_display()
+
+    class Meta:
+        verbose_name = "Статус ответа"
+        verbose_name_plural = "Статусы ответа"
