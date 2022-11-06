@@ -16,7 +16,14 @@
     <dt class="col-sm-3">Действия</dt>
     <dd class="col-sm-9">{{ answer.actions }}</dd>
 </dl>
+    <form method="get" action="/answer/{{ answer.pk }}/">
+        <button type="submit" class="btn btn-primary">
+            Редактировать
+        </button>
+    </form>
 <form method="post" action="/answer/{{ answer.pk }}/delete/">{% csrf_token %}
-    <input type="submit" value="Удалить" class="btn btn-danger">
+    <button type="submit" class="btn btn-danger">
+        Удалить
+    </button>
 </form>
 </li>

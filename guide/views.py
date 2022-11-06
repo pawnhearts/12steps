@@ -56,6 +56,32 @@ class AnswerCreateView(LoginRequiredMixin, CreateView):
         return form
 
 
+class AnswerUpdateView(LoginRequiredMixin, CreateView):
+    model = Answer
+    fields = ['situation', 'thoughts', 'feelings2', 'feelings', 'actions']
+
+    def get_object(self, queryset=None):
+        self.object = super().get_object()
+        if self.object.user != self.request.user:
+            raise PermissionDenied()
+        return self.object
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['question'] = self.object.question
+        return context
+
+    def get_success_url(self):
+        return f'/questions/{self.object.question.pk}/'
+
+    def get_form(self, *args, **kwargs):
+        form = super().get_form(*args, **kwargs)
+        form.fields['feelings'] = forms.ModelMultipleChoiceField(
+            label='Чувства', queryset=Feeling.objects.all(), widget=forms.CheckboxSelectMultiple, required=False
+        )
+        return form
+
+
 class AnswerDeleteView(LoginRequiredMixin, DeleteView):
     model = Answer
 

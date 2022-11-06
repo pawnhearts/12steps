@@ -9,16 +9,19 @@ div.form-check{display:inline-block;}
 <h1><a class="badge badge-secondary" href="/steps/{{ question.section.step.program }}/">{{ question.section.step }}</a></h1>
 <h2>{{ question.section.number }}. {{ question.section.title }}</h2>
     <h3>{{ question.number }}. {{ question.text }}</h3>
-<ul class="list-group">
-    {% for answer in answers %}
-        {% include 'guide/answer.html' with answer=answer %}
-    {% endfor %}
-</ul>
+    {% if answers %}
+        <ul class="list-group">
+            {% for answer in answers %}
+                {% include 'guide/answer.html' with answer=answer %}
+            {% endfor %}
+        </ul>
+    {% endif %}
 <form method="post">
     {% csrf_token %}
       {{ form|crispy }}
     <button type="submit" class="btn btn-success">
-      Боже, сохрани
+      Сохранить
     </button>
 </form>
+    {{ instance }}
 {% endblock %}
