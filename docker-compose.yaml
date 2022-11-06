@@ -17,7 +17,7 @@ services:
 
 
   db:
-    image: postgres/postgres:latest
+    image: postgres:latest
     env_file:
       - .env
     restart: on-failure
