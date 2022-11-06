@@ -2,6 +2,7 @@ from django import forms
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.views.generic import ListView, CreateView, DeleteView
 
 from guide.models import Step, Answer, Question, Feeling
@@ -13,7 +14,7 @@ class StepListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         program = self.kwargs.get('program').upper()
         if program not in ('AA', 'NA'):
-            raise Http404
+            raise Http404()
         return super().get_queryset().filter(program=program).with_answer_count(self.request.user)
 
 
@@ -57,6 +58,12 @@ class AnswerCreateView(LoginRequiredMixin, CreateView):
 
 class AnswerDeleteView(LoginRequiredMixin, DeleteView):
     model = Answer
+
+    def get_object(self, queryset=None):
+        self.object = super().get_object()
+        if self.object.user != self.request.user:
+            raise PermissionDenied()
+        return self.object
 
     def get_success_url(self):
         return f'/question/{self.object.question_id}'
