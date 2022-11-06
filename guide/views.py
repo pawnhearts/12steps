@@ -51,7 +51,7 @@ class AnswerCreateView(LoginRequiredMixin, CreateView):
     def get_form(self, *args, **kwargs):
         form = super().get_form(*args, **kwargs)
         form.fields['feelings'] = forms.ModelMultipleChoiceField(
-            label='Чувства', queryset=Feeling.objects.all(), widget=forms.CheckboxSelectMultiple
+            label='Чувства', queryset=Feeling.objects.all(), widget=forms.CheckboxSelectMultiple, required=False
         )
         return form
 
