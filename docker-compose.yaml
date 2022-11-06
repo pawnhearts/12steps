@@ -13,7 +13,7 @@ services:
       - db
     volumes:
       - ./:/app/
-    command: bash -c "sleep 2 && python manage.py migrate && gunicorn steps.wsgi:application -w 2 -b :8000"
+    command: bash -c "sleep 2 && python manage.py migrate && gunicorn steps.wsgi:application --reload -w 2 -b :8000"
 
 
   db:
