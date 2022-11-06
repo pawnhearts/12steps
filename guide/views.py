@@ -66,4 +66,4 @@ class AnswerDeleteView(LoginRequiredMixin, DeleteView):
         return self.object
 
     def get_success_url(self):
-        return f'/question/{self.object.question_id}'
+        return f'/question/{self.object.question_id}/'
