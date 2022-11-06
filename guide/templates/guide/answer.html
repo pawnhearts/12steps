@@ -16,4 +16,7 @@
     <dt class="col-sm-3">Действия</dt>
     <dd class="col-sm-9">{{ answer.actions }}</dd>
 </dl>
+<form method="post" action="/answers/{{ answer.pk }}/delete/">{% csrf_token %}
+    <input type="submit" value="Удалить" class="btn btn-danger">
+</form>
 </li>

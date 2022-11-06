@@ -2,7 +2,7 @@ from django import forms
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, DeleteView
 
 from guide.models import Step, Answer, Question, Feeling
 
@@ -53,3 +53,10 @@ class AnswerCreateView(LoginRequiredMixin, CreateView):
             label='Чувства', queryset=Feeling.objects.all(), widget=forms.CheckboxSelectMultiple
         )
         return form
+
+
+class AnswerDeleteView(LoginRequiredMixin, DeleteView):
+    model = Answer
+
+    def get_success_url(self):
+        return f'/question/{self.object.question_id}'

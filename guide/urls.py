@@ -1,4 +1,3 @@
-from django.contrib.auth.decorators import login_required
 from django.urls import path
 from django.views.generic import TemplateView
 
@@ -9,4 +8,5 @@ urlpatterns = [
     path('steps/<str:program>/', views.StepListView.as_view(), name='step-list'),
     path('questions/<int:pk>/', views.QuestionListView.as_view(), name='question-list'),
     path('question/<int:pk>/', views.AnswerCreateView.as_view(), name='answer-create'),
+    path('answer/<int:pk>/delete/', views.AnswerDeleteView.as_view(), name='answer-delete'),
 ]
