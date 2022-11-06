@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models import Count, Q
+from django.db.models import Count, Q, Subquery, OuterRef
 
 
 class StepQuerySet(models.QuerySet):
@@ -66,7 +66,8 @@ class Section(models.Model):
 
 class QuestionQuerySet(models.QuerySet):
     def with_answer_count(self, user):
-        return self.annotate(answer_count=Count('answer', filter=Q(answer__user=user)))
+        sq = Subquery(AnswerStatus.objects.filter(question_id=OuterRef('pk'), user=user).values('status'))
+        return self.annotate(answer_count=Count('answer', filter=Q(answer__user=user)), status=sq[:1])
 
 
 class Question(models.Model):
@@ -122,15 +123,15 @@ class Answer(models.Model):
 
 
 class AnswerStatuses(models.TextChoices):
-    work = 'WORK', 'В работе'
-    completed = 'COMPLETED', 'Завершен'
+    WORK = 'WORK', 'В работе'
+    COMPLETED = 'COMPLETED', 'Завершен'
 
 
 class AnswerStatus(models.Model):
     created = models.DateTimeField('Дата и время', auto_now_add=True, editable=False)
     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
     question = models.ForeignKey(Question, verbose_name='Вопрос', on_delete=models.CASCADE)
-    status = models.CharField('Статус', max_length=16, choices=AnswerStatuses.choices, default=AnswerStatuses.work)
+    status = models.CharField('Статус', max_length=16, choices=AnswerStatuses.choices, default=AnswerStatuses.WORK)
 
     def __str__(self):
         return self.get_status_display()
