@@ -91,7 +91,7 @@ class AnswerUpdateView(LoginRequiredMixin, UpdateView):
         return context
 
     def get_success_url(self):
-        return f'/questions/{self.object.question.pk}/'
+        return f'/question/{self.object.question.pk}/'
 
     def get_form(self, *args, **kwargs):
         form = super().get_form(*args, **kwargs)
