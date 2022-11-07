@@ -24,6 +24,8 @@ div.form-check{display:inline-block;}
       Сохранить
     </button>
 </form>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        {{ form.media.js }}
     {% if show_close_button %}
         <form method="post" action="/question/{{ question.pk }}/close/">{% csrf_token %}
             <button type="submit" class="btn btn-danger">
