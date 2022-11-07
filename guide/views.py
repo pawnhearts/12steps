@@ -69,10 +69,9 @@ class AnswerCreateView(CreateView):
 
     def get_form(self, *args, **kwargs):
         form = super().get_form(*args, **kwargs)
-        # form.fields['feelings'] = forms.ModelMultipleChoiceField(
-        #     label='Чувства', queryset=Feeling.objects.all(), widget=forms.CheckboxSelectMultiple, required=False
-        # )
-        form.fields['feelings'] = FeelingsWidget(label='Чувства', queryset=Feeling.objects.all(), required=False)
+        form.fields['feelings'] = forms.ModelMultipleChoiceField(
+            label='Чувства', queryset=Feeling.objects.all(), widget=FeelingsWidget, required=False
+        )
         return form
 
 
@@ -96,10 +95,9 @@ class AnswerUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_form(self, *args, **kwargs):
         form = super().get_form(*args, **kwargs)
-        # form.fields['feelings'] = forms.ModelMultipleChoiceField(
-        #     label='Чувства', queryset=Feeling.objects.all(), widget=forms.CheckboxSelectMultiple, required=False
-        # )
-        form.fields['feelings'].widget = FeelingsWidget(label='Чувства', queryset=Feeling.objects.all(), required=False)
+        form.fields['feelings'] = forms.ModelMultipleChoiceField(
+            label='Чувства', queryset=Feeling.objects.all(), widget=FeelingsWidget, required=False
+        )
         return form
 
 
