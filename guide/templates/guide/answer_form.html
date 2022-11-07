@@ -2,6 +2,12 @@
 
 {% load crispy_forms_tags %}
 
+{% block extra_head %}
+    {{ form.media.css }}
+    <style>
+        input, select {width: 100%}
+    </style>
+{% endblock %}
 {% block content %}
 <style>
 div.form-check{display:inline-block;}
