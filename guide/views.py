@@ -51,6 +51,7 @@ class AnswerCreateView(LoginRequiredMixin, CreateView):
         self.object.user = self.request.user
         self.object.save()
         form.save_m2m()
+        AnswerStatus.objects.get_or_create(user=self.request.user, question=self.object.question)
         return HttpResponseRedirect(self.request.path)
 
     def get_form(self, *args, **kwargs):
