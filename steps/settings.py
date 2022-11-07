@@ -132,6 +132,7 @@ CACHES = {
 }
 
 SELECT2_CACHE_BACKEND = "default"
+I18N_AVAILABLE_LANGUAGES = ['ru']
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
