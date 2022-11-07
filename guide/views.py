@@ -9,17 +9,17 @@ from django.views.generic import ListView, CreateView, DeleteView, UpdateView
 from guide.models import Step, Answer, Question, Feeling, AnswerStatus, AnswerStatuses
 
 
-class StepListView(LoginRequiredMixin, ListView):
+class StepListView(ListView):
     model = Step
 
     def get_queryset(self):
         program = self.kwargs.get('program').upper()
         if program not in ('AA', 'NA'):
             raise Http404()
-        return super().get_queryset().filter(program=program).with_answer_count(self.request.user)
+        return super().get_queryset().filter(program=program)#.with_answer_count(self.request.user)
 
 
-class QuestionListView(LoginRequiredMixin, ListView):
+class QuestionListView(ListView):
     model = Question
 
     def get_context_data(self, **kwargs):
@@ -28,10 +28,13 @@ class QuestionListView(LoginRequiredMixin, ListView):
         return context
 
     def get_queryset(self):
-        return super().get_queryset().filter(section__step_id=self.kwargs.get('pk')).with_answer_count(self.request.user)
+        qs = super().get_queryset().filter(section__step_id=self.kwargs.get('pk'))
+        if self.request.user.is_authenticated:
+            qs = qs.with_answer_count(self.request.user)
+        return qs
 
 
-class AnswerCreateView(LoginRequiredMixin, CreateView):
+class AnswerCreateView(CreateView):
     model = Answer
     fields = ['situation', 'thoughts', 'feelings2', 'feelings', 'actions']
 
@@ -46,6 +49,8 @@ class AnswerCreateView(LoginRequiredMixin, CreateView):
         return context
 
     def form_valid(self, form):
+        if not self.request.user.is_authenticated:
+            raise PermissionDenied()
         self.object = form.save(commit=False)
         self.object.question = get_object_or_404(Question, pk=self.kwargs.get('pk'))
         self.object.user = self.request.user

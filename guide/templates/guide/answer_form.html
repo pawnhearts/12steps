@@ -9,6 +9,7 @@ div.form-check{display:inline-block;}
 <h1><a href="/steps/{{ question.section.step.program }}/">{{ question.section.step }}</a></h1>
 <h2>{{ question.section.number }}. {{ question.section.title }}</h2>
     <h3>{{ question.number }}. {{ question.text }}</h3>
+    {% if user.is_authenticated %}
     {% if answers %}
         <ul class="list-group">
             {% for answer in answers %}
@@ -29,5 +30,8 @@ div.form-check{display:inline-block;}
                 {% if is_closed %}В работу{% else %}Закрыть{% endif %}
             </button>
         </form>
+    {% endif %}
+    {% else %}
+        <a href="/accounts/register/">Зарегестрируйтесь</a> или <a href="/accounts/login/">войдите</a>, чтобы отвечать на вопросы.
     {% endif %}
 {% endblock %}
