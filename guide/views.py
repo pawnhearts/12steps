@@ -5,6 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.views import View
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView
+from django_select2 import forms as s2forms
 
 from guide.models import Step, Answer, Question, Feeling, AnswerStatus, AnswerStatuses
 
@@ -32,6 +33,12 @@ class QuestionListView(ListView):
         if self.request.user.is_authenticated:
             qs = qs.with_answer_count(self.request.user)
         return qs
+
+
+class FeelingsWidget(s2forms.ModelSelect2MultipleWidget):
+    search_fields = [
+        "title__icontains",
+    ]
 
 
 class AnswerCreateView(CreateView):
@@ -62,9 +69,10 @@ class AnswerCreateView(CreateView):
 
     def get_form(self, *args, **kwargs):
         form = super().get_form(*args, **kwargs)
-        form.fields['feelings'] = forms.ModelMultipleChoiceField(
-            label='Чувства', queryset=Feeling.objects.all(), widget=forms.CheckboxSelectMultiple, required=False
-        )
+        # form.fields['feelings'] = forms.ModelMultipleChoiceField(
+        #     label='Чувства', queryset=Feeling.objects.all(), widget=forms.CheckboxSelectMultiple, required=False
+        # )
+        form.fields['feelings'] = FeelingsWidget(label='Чувства', queryset=Feeling.objects.all(), required=False)
         return form
 
 
@@ -88,9 +96,10 @@ class AnswerUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_form(self, *args, **kwargs):
         form = super().get_form(*args, **kwargs)
-        form.fields['feelings'] = forms.ModelMultipleChoiceField(
-            label='Чувства', queryset=Feeling.objects.all(), widget=forms.CheckboxSelectMultiple, required=False
-        )
+        # form.fields['feelings'] = forms.ModelMultipleChoiceField(
+        #     label='Чувства', queryset=Feeling.objects.all(), widget=forms.CheckboxSelectMultiple, required=False
+        # )
+        form.fields['feelings'] = FeelingsWidget(label='Чувства', queryset=Feeling.objects.all(), required=False)
         return form
 
 

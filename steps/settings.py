@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "ordered_model",
     "django_extensions",
     "crispy_forms",
+    "django_select2",
 
     "guide",
 ]
