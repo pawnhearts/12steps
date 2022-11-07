@@ -3,7 +3,7 @@ from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
-from django.views.generic import ListView, CreateView, DeleteView
+from django.views.generic import ListView, CreateView, DeleteView, UpdateView
 
 from guide.models import Step, Answer, Question, Feeling
 
@@ -56,7 +56,7 @@ class AnswerCreateView(LoginRequiredMixin, CreateView):
         return form
 
 
-class AnswerUpdateView(LoginRequiredMixin, CreateView):
+class AnswerUpdateView(LoginRequiredMixin, UpdateView):
     model = Answer
     fields = ['situation', 'thoughts', 'feelings2', 'feelings', 'actions']
 
@@ -68,7 +68,7 @@ class AnswerUpdateView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['question'] = self.instance.question
+        context['question'] = self.object.question
         return context
 
     def get_success_url(self):
