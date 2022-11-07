@@ -41,11 +41,12 @@ class AnswerCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['question'] = get_object_or_404(Question, pk=self.kwargs.get('pk'))
-        context['show_close_button'] = True
-        context['is_closed'] = context['question'].answerstatus_set.filter(
-            status=AnswerStatuses.COMPLETED, user=self.request.user
-        )
-        context['answers'] = Answer.objects.filter(question=context['question'], user=self.request.user)
+        if self.request.user.is_authenticated:
+            context['show_close_button'] = True
+            context['is_closed'] = context['question'].answerstatus_set.filter(
+                status=AnswerStatuses.COMPLETED, user=self.request.user
+            )
+            context['answers'] = Answer.objects.filter(question=context['question'], user=self.request.user)
         return context
 
     def form_valid(self, form):
