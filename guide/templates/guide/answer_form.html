@@ -24,7 +24,7 @@ div.form-check{display:inline-block;}
     </button>
 </form>
     {% if show_close_button %}
-        <form method="post" action="/question/{{ answer.pk }}/close/">{% csrf_token %}
+        <form method="post" action="/question/{{ question.pk }}/close/">{% csrf_token %}
             <button type="submit" class="btn btn-danger">
                 {% if is_closed %}В работу{% else %}Закрыть{% endif %}
             </button>
