@@ -68,7 +68,7 @@ class AnswerUpdateView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['question'] = self.object.question
+        context['question'] = self.instance.question
         return context
 
     def get_success_url(self):
