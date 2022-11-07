@@ -3,9 +3,10 @@ from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
+from django.views import View
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView
 
-from guide.models import Step, Answer, Question, Feeling
+from guide.models import Step, Answer, Question, Feeling, AnswerStatus, AnswerStatuses
 
 
 class StepListView(LoginRequiredMixin, ListView):
@@ -37,6 +38,10 @@ class AnswerCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['question'] = get_object_or_404(Question, pk=self.kwargs.get('pk'))
+        context['show_close_button'] = True
+        context['is_closed'] = context['question'].answerstatus_set.filter(
+            status=AnswerStatuses.COMPLETED, user=self.request.user
+        )
         context['answers'] = Answer.objects.filter(question=context['question'], user=self.request.user)
         return context
 
@@ -93,3 +98,12 @@ class AnswerDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         return f'/question/{self.object.question_id}/'
+
+
+class AnswerCloseView(LoginRequiredMixin, View):
+    def post(self, *args, **kwargs):
+        question = get_object_or_404(Question, pk=self.kwargs.get('pk'))
+        answerstatus, _ = AnswerStatus.objects.get_or_create(user=self.request.user, quesion=question)
+        answerstatus.status = AnswerStatuses.COMPLETED
+        answerstatus.save()
+        return HttpResponseRedirect(f'/question/{question.pk}/')
