@@ -103,7 +103,7 @@ class AnswerDeleteView(LoginRequiredMixin, DeleteView):
 class AnswerCloseView(LoginRequiredMixin, View):
     def post(self, *args, **kwargs):
         question = get_object_or_404(Question, pk=self.kwargs.get('pk'))
-        answerstatus, _ = AnswerStatus.objects.get_or_create(user=self.request.user, quesion=question)
+        answerstatus, _ = AnswerStatus.objects.get_or_create(user=self.request.user, question=question)
         if answerstatus.status == AnswerStatuses.COMPLETED:
             answerstatus.status = AnswerStatuses.WORK
         else:
