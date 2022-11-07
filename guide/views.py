@@ -99,7 +99,7 @@ class AnswerUpdateView(LoginRequiredMixin, UpdateView):
         # form.fields['feelings'] = forms.ModelMultipleChoiceField(
         #     label='Чувства', queryset=Feeling.objects.all(), widget=forms.CheckboxSelectMultiple, required=False
         # )
-        form.fields['feelings'] = FeelingsWidget(label='Чувства', queryset=Feeling.objects.all(), required=False)
+        form.fields['feelings'].widget = FeelingsWidget(label='Чувства', queryset=Feeling.objects.all(), required=False)
         return form
 
 
