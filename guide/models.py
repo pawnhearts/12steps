@@ -11,8 +11,8 @@ class StepQuerySet(models.QuerySet):
 
 
 class Programs(models.TextChoices):
-    NA = 'NA', 'АН'
-    AA = 'AA', 'АА'
+    NA = 'NA', 'Шаги АН по руководству'
+    AA = 'AA', 'Шаги АА'
 
 
 class Step(models.Model):
