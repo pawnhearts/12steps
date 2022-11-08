@@ -15,8 +15,6 @@
     {% for program in programs %}
         <li class="nav-item"><a class="nav-link" href="/steps/{{ program.0 }}/">{{ program.1 }}</a></li>
     {% endfor %}
-        <li class="nav-item"><a class="nav-link" href="/steps/AA/">Шаги АА</a></li>
-        <li class="nav-item"><a class="nav-link" href="/steps/NA/">Шаги АН по руководству</a></li>
         {% if not user.is_authenticated %}
             <li class="nav-item"><a class="nav-link" href="/accounts/register/">Регистрация</a></li>
             <li class="nav-item"><a class="nav-link" href="/accounts/login/">Вход</a></li>
