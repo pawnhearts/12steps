@@ -9,7 +9,7 @@ from django.views import View
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView
 from django_select2 import forms as s2forms
 
-from guide.models import Step, Answer, Question, Feeling, AnswerStatus, AnswerStatuses
+from guide.models import Step, Answer, Question, Feeling, AnswerStatus, AnswerStatuses, Programs
 
 
 class StepListView(ListView):
@@ -20,6 +20,14 @@ class StepListView(ListView):
         if program not in ('AA', 'NA'):
             raise Http404()
         return super().get_queryset().filter(program=program)#.with_answer_count(self.request.user)
+
+    def get_context_data(self, **kwargs):
+        program = self.kwargs.get('program').upper()
+        if program not in ('AA', 'NA'):
+            raise Http404()
+        context = super().get_context_data(**kwargs)
+        context['program'] = dict(Programs.choices)[program]
+        return context
 
 
 class QuestionListView(ListView):
