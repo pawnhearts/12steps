@@ -1,4 +1,5 @@
 from django import forms
+from django.db.models import Q
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -35,10 +36,25 @@ class QuestionListView(ListView):
         return qs
 
 
-class FeelingsWidget(s2forms.ModelSelect2MultipleWidget):
+class FeelingsWidget(s2forms.ModelSelect2TagWidget):
     search_fields = [
         "title__icontains",
     ]
+
+    queryset = Feeling.objects.all()
+
+    def get_queryset(self):
+        return self.queryset.filter(Q(user=None) | Q(user=self.user))
+
+    def value_from_datadict(self, data, files, name):
+        '''Create objects for given non-pimary-key values. Return list of all primary keys.'''
+        values = set(super().value_from_datadict(data, files, name))
+        pks = self.get_queryset().filter(**{'pk__in': list(values)}).values_list('pk', flat=True)
+        pks = set(map(str, pks))
+        cleaned_values = list(values)
+        for val in values - pks:
+            cleaned_values.append(self.queryset.create(title=val, user=self.user).pk)
+        return cleaned_values
 
 
 class AnswerCreateView(CreateView):
@@ -72,6 +88,7 @@ class AnswerCreateView(CreateView):
         form.fields['feelings'] = forms.ModelMultipleChoiceField(
             label='Чувства', queryset=Feeling.objects.all(), widget=FeelingsWidget, required=False
         )
+        form.fields['feelings'].widget.user = self.request.user
         return form
 
 
@@ -98,6 +115,7 @@ class AnswerUpdateView(LoginRequiredMixin, UpdateView):
         form.fields['feelings'] = forms.ModelMultipleChoiceField(
             label='Чувства', queryset=Feeling.objects.all(), widget=FeelingsWidget, required=False
         )
+        form.fields['feelings'].widget.user = self.request.user
         return form
 
 
