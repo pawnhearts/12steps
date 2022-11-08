@@ -31,7 +31,7 @@ div.form-check{display:inline-block;}
     {% endif %}
 <form method="post">
     {% csrf_token %}
-      {{ form.as_p }}
+      {{ form|crispy }}
     <button type="submit" class="btn btn-success">
       Сохранить
     </button>
