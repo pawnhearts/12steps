@@ -72,8 +72,12 @@ class AnswerFormMixin:
 
     def get_form(self, *args, **kwargs):
         form = super().get_form(*args, **kwargs)
+        if self.request.user.is_authenticated:
+            qs = Feeling.objects.filter(Q(user=None) | Q(user=self.request.user))
+        else:
+            qs = Feeling.objects.filter(user=None)
         form.fields['feelings'] = forms.ModelMultipleChoiceField(
-            label='Чувства', queryset=Feeling.objects.filter(Q(user=None) | Q(user=self.request.user)),
+            label='Чувства', queryset=qs,
             widget=FeelingsWidget, required=False
         )
         form.fields['feelings'].widget.user = self.request.user
