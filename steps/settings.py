@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'django.contrib.sites',
+    'django.contrib.flatpages',
     "django_registration",
     "ordered_model",
     "django_extensions",
@@ -51,6 +53,7 @@ INSTALLED_APPS = [
 
     "guide",
 ]
+SITE_ID = env('SITE_ID', int, 1)
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
