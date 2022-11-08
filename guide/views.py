@@ -71,8 +71,8 @@ class FeelingsWidget(s2forms.ModelSelect2TagWidget):
             c for c in selected_choices if c not in self.choices.field.empty_values
         }
         field_name = self.choices.field.to_field_name or "pk"
-        query = Q(**{"%s__in" % field_name: [val for val in selected_choices if val.isnumeric()]}) |Q(**{"title__in": [val for val in selected_choices if not val.isnumeric()]})
-        for obj in self.choices.queryset.filter(query):
+        query = Q(**{"%s__in" % field_name: [val for val in selected_choices if val.isnumeric()]}) | Q(**{"title__in": [val for val in selected_choices if not val.isnumeric()]})
+        for obj in self.get_queryset().filter(query):
             option_value = self.choices.choice(obj)[0]
             option_label = self.label_from_instance(obj)
 
