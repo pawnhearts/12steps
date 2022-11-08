@@ -66,9 +66,21 @@ class FeelingsWidget(s2forms.ModelSelect2TagWidget):
         return cleaned_values
 
 
-class AnswerCreateView(CreateView):
+class AnswerFormMixin:
     model = Answer
     fields = ['situation', 'thoughts', 'feelings', 'actions']
+
+    def get_form(self, *args, **kwargs):
+        form = super().get_form(*args, **kwargs)
+        form.fields['feelings'] = forms.ModelMultipleChoiceField(
+            label='Чувства', queryset=Feeling.objects.filter(Q(user=None) | Q(user=self.request.user)),
+            widget=FeelingsWidget, required=False
+        )
+        form.fields['feelings'].widget.user = self.request.user
+        return form
+
+
+class AnswerCreateView(AnswerFormMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -92,18 +104,8 @@ class AnswerCreateView(CreateView):
         AnswerStatus.objects.get_or_create(user=self.request.user, question=self.object.question)
         return HttpResponseRedirect(self.request.path)
 
-    def get_form(self, *args, **kwargs):
-        form = super().get_form(*args, **kwargs)
-        form.fields['feelings'] = forms.ModelMultipleChoiceField(
-            label='Чувства', queryset=Feeling.objects.all(), widget=FeelingsWidget, required=False
-        )
-        form.fields['feelings'].widget.user = self.request.user
-        return form
 
-
-class AnswerUpdateView(LoginRequiredMixin, UpdateView):
-    model = Answer
-    fields = ['situation', 'thoughts', 'feelings', 'actions']
+class AnswerUpdateView(AnswerFormMixin, LoginRequiredMixin, UpdateView):
 
     def get_object(self, queryset=None):
         self.object = super().get_object()
@@ -118,14 +120,6 @@ class AnswerUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return f'/question/{self.object.question.pk}/'
-
-    def get_form(self, *args, **kwargs):
-        form = super().get_form(*args, **kwargs)
-        form.fields['feelings'] = forms.ModelMultipleChoiceField(
-            label='Чувства', queryset=Feeling.objects.all(), widget=FeelingsWidget, required=False
-        )
-        form.fields['feelings'].widget.user = self.request.user
-        return form
 
 
 class AnswerDeleteView(LoginRequiredMixin, DeleteView):
