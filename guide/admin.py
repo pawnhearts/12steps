@@ -1,6 +1,5 @@
 from django.contrib import admin
 from django.urls import reverse
-from ordered_model.admin import OrderedModelAdmin
 from guide.models import Step, Question, Answer, Feeling, Section
 from django.contrib.flatpages.admin import FlatPageAdmin
 from django.contrib.flatpages.models import FlatPage
@@ -22,9 +21,7 @@ class TinyMCEFlatPageAdmin(FlatPageAdmin):
 admin.site.unregister(FlatPage)
 admin.site.register(FlatPage, TinyMCEFlatPageAdmin)
 
-# @admin.register(Step)
-# class StepAdmin(OrderedModelAdmin):
-#     list_display = ('title', 'move_up_down_links')
+
 @admin.register(Step)
 class StepAdmin(admin.ModelAdmin):
     list_display = ('number', 'title')

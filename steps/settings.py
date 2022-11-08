@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.flatpages',
     "django_registration",
-    "ordered_model",
     "django_extensions",
     "crispy_forms",
     "django_select2",
