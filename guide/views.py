@@ -59,6 +59,7 @@ class FeelingsWidget(s2forms.ModelSelect2TagWidget):
 
     def optgroups(self, name, value, attrs=None):
         """Return only selected options and set QuerySet from `ModelChoicesIterator`."""
+        raise value
         default = (None, [], 0)
         groups = [default]
         has_selected = False
