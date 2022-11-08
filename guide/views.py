@@ -57,9 +57,10 @@ class FeelingsWidget(s2forms.ModelSelect2TagWidget):
             cleaned_values.append(Feeling.objects.create(title=val, user=self.user).pk)
         return cleaned_values
 
+
 class AnswerCreateView(CreateView):
     model = Answer
-    fields = ['situation', 'thoughts', 'feelings2', 'feelings', 'actions']
+    fields = ['situation', 'thoughts', 'feelings', 'actions']
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -94,7 +95,7 @@ class AnswerCreateView(CreateView):
 
 class AnswerUpdateView(LoginRequiredMixin, UpdateView):
     model = Answer
-    fields = ['situation', 'thoughts', 'feelings2', 'feelings', 'actions']
+    fields = ['situation', 'thoughts', 'feelings', 'actions']
 
     def get_object(self, queryset=None):
         self.object = super().get_object()

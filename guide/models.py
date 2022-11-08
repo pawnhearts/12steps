@@ -113,7 +113,6 @@ class Answer(models.Model):
     thoughts = models.TextField('Мысли', blank=True, null=True)
     actions = models.TextField('Действия', blank=True, null=True)
     feelings = models.ManyToManyField(Feeling, blank=True, verbose_name='Чувства')
-    feelings2 = models.CharField('Чувства', max_length=512, null=True, blank=True)
 
     def __str__(self):
         return f'{self.user} {self.question}'
