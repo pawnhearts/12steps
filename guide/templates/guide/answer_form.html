@@ -12,8 +12,17 @@
 <style>
 div.form-check{display:inline-block;}
 </style>
-<h1><a href="/questions/{{ question.section.pk }}/">{{ question.section.step }}</a></h1>
-<h2>{{ question.section.number }}. {{ question.section.title }}</h2>
+<h2>{{ question.section.step }} - {{ question.section.number }}. {{ question.section.title }}</h2>
+    <h1 class="mt-2">{{ step }}</h1>
+    <hr class="mt-0 mb-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/steps/{{ question.section.step.program }}">{{ question.section.step.get_program_display }}</a></li>
+            <li class="breadcrumb-item"><a href="/questions/{{ question.section.step.pk }}">{{ question.section.step.title }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ question.section.title }}</li>
+        </ol>
+    </nav>
+    <div>
     <h3>{{ question.number }}. {{ question.text }}</h3>
     {% if user.is_authenticated %}
     {% if answers %}
