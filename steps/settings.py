@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "django_extensions",
     "crispy_forms",
     "django_select2",
+    'tinymce',
 
     "guide",
 ]
