@@ -50,11 +50,10 @@ class FeelingsWidget(s2forms.ModelSelect2TagWidget):
         '''Create objects for given non-pimary-key values. Return list of all primary keys.'''
         values = set(super().value_from_datadict(data, files, name))
         pks = self.get_queryset().filter(**{'pk__in': [val for val in values if val.isnumeric()]}).values_list('pk', flat=True)
-        raise Exception(pks)
         pks = set(map(str, pks))
         cleaned_values = list(values)
         for val in values - pks:
-            cleaned_values.append(self.queryset.create(title=val, user=self.user).pk)
+            cleaned_values.append(Feeling.objects.create(title=val, user=self.user).pk)
         return cleaned_values
 
 
