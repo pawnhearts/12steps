@@ -52,44 +52,10 @@ class FeelingsWidget(s2forms.ModelSelect2TagWidget):
         values = set(super().value_from_datadict(data, files, name))
         pks = self.get_queryset().filter(**{'pk__in': [val for val in values if val.isnumeric()]}).values_list('pk', flat=True)
         pks = set(map(str, pks))
-        cleaned_values = list(values)
+        cleaned_values = list(pks)
         for val in values - pks:
             cleaned_values.append(Feeling.objects.create(title=val, user=self.user).pk)
         return cleaned_values
-
-    def optgroups(self, name, value, attrs=None):
-        """Return only selected options and set QuerySet from `ModelChoicesIterator`."""
-        raise Exception(value)
-        default = (None, [], 0)
-        groups = [default]
-        has_selected = False
-        selected_choices = {str(v) for v in value}
-        if not self.is_required and not self.allow_multiple_selected:
-            default[1].append(self.create_option(name, "", "", False, 0))
-        if not isinstance(self.choices, ModelChoiceIterator):
-            return super().optgroups(name, value, attrs=attrs)
-        selected_choices = {
-            c for c in selected_choices if c not in self.choices.field.empty_values
-        }
-        field_name = self.choices.field.to_field_name or "pk"
-        query = Q(**{"%s__in" % field_name: [val for val in selected_choices if val.isnumeric()]}) | Q(**{"title__in": [val for val in selected_choices if not val.isnumeric()]})
-        for obj in self.get_queryset().filter(query):
-            option_value = self.choices.choice(obj)[0]
-            option_label = self.label_from_instance(obj)
-
-            selected = str(option_value) in value and (
-                    has_selected is False or self.allow_multiple_selected
-            )
-            if selected is True and has_selected is False:
-                has_selected = True
-            index = len(default[1])
-            subgroup = default[1]
-            subgroup.append(
-                self.create_option(
-                    name, option_value, option_label, selected_choices, index
-                )
-            )
-        return groups
 
 class AnswerCreateView(CreateView):
     model = Answer
