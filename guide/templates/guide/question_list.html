@@ -15,7 +15,7 @@
 </div>
 {% regroup object_list by section as sections %}
 {% for section in sections %}
-{% if section.grouper.show_header %}<h2>{{ section.grouper.number }} {{ section.grouper.title }}</h2>{% endif %}
+{% if section.grouper.show_header %}<h2>{{ section.grouper.number }}. {{ section.grouper.title }}</h2>{% endif %}
     <p>{{ section.grouper.text }}</p>
 <ol>
 {% for question in section.list %}
