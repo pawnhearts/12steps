@@ -23,6 +23,7 @@ urlpatterns = [
     path('accounts/', include('django_registration.backends.one_step.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path("select2/", include("django_select2.urls")),
+    path('tinymce/', include('tinymce.urls')),
     path("admin/", admin.site.urls),
     path('', flatpage, {'url': '/'}, name='index'),
     re_path(r'^(?P<url>.*/)$', flatpage),
