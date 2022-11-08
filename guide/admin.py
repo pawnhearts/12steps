@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.urls import reverse
 from ordered_model.admin import OrderedModelAdmin
 from guide.models import Step, Question, Answer, Feeling, Section
 from django.contrib.flatpages.admin import FlatPageAdmin
