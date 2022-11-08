@@ -95,6 +95,7 @@ class Question(models.Model):
 
 class Feeling(models.Model):
     title = models.CharField('Чуство', max_length=255)
+    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.title}'
