@@ -2,9 +2,7 @@
 
 
 {% block content %}
-<h1 class="mt-2">{{ step }}</h1>
-    <hr class="mt-0 mb-4">
-    <nav aria-label="breadcrumb">
+<nav aria-label="breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="/steps/{{ step.program }}">{{ step.get_program_display }}</a></li>
     <li class="breadcrumb-item active" aria-current="page">{{ step.title }}</li>
