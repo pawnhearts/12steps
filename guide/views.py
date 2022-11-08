@@ -49,8 +49,7 @@ class FeelingsWidget(s2forms.ModelSelect2TagWidget):
     def value_from_datadict(self, data, files, name):
         '''Create objects for given non-pimary-key values. Return list of all primary keys.'''
         values = set(super().value_from_datadict(data, files, name))
-        pks = self.get_queryset().filter(**{'pk__in': list(values)}).values_list('pk', flat=True)
-        print(pks)
+        pks = self.get_queryset().filter(**{'pk__in': [val for val in values if val.isnumeric()]}).values_list('pk', flat=True)
         pks = set(map(str, pks))
         cleaned_values = list(values)
         for val in values - pks:
