@@ -28,10 +28,15 @@ class StepAdmin(admin.ModelAdmin):
     list_filter = ('program',)
 
 
+class QuestionInlineAdmin(admin.StackedInline):
+    model = Question
+
+
 @admin.register(Section)
 class SectionAdmin(admin.ModelAdmin):
     list_display = ('number', 'title')
     list_filter = ('step__program', 'step')
+    inlines = [QuestionInlineAdmin]
 
 
 @admin.register(Question)
