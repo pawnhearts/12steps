@@ -1,6 +1,5 @@
 from django import forms
 from django.db.models import Q
-from django.forms.models import ModelChoiceIterator
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
