@@ -22,10 +22,15 @@ admin.site.unregister(FlatPage)
 admin.site.register(FlatPage, TinyMCEFlatPageAdmin)
 
 
+class SectionInlineAdmin(admin.StackedInline):
+    model = Section
+
+
 @admin.register(Step)
 class StepAdmin(admin.ModelAdmin):
     list_display = ('number', 'title')
     list_filter = ('program',)
+    inlines = (SectionInlineAdmin,)
 
 
 class QuestionInlineAdmin(admin.StackedInline):
@@ -36,7 +41,7 @@ class QuestionInlineAdmin(admin.StackedInline):
 class SectionAdmin(admin.ModelAdmin):
     list_display = ('number', 'title')
     list_filter = ('step__program', 'step')
-    inlines = [QuestionInlineAdmin]
+    inlines = (QuestionInlineAdmin,)
 
 
 @admin.register(Question)
