@@ -38,14 +38,7 @@ class Step(models.Model):
         ordering = ['number']
 
 
-class SectionQuerySet(models.QuerySet):
-    def with_answer_count(self, user):
-        return self.annotate(answer_count=Count('quesion__answer', filter=Q(question__answer__user=user)))
-
-
 class Section(models.Model):
-    objects = SectionQuerySet.as_manager()
-
     step = models.ForeignKey(Step, verbose_name='Шаг', on_delete=models.CASCADE)
     number = models.PositiveSmallIntegerField('Номер', blank=True, db_index=True)
     show_header = models.BooleanField('Показывать заголовок', default=True)

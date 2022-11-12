@@ -16,12 +16,12 @@
     </div>
     {% for section in object_list %}
 
-        {% if section.grouper.show_header %}
+        {% if section.show_header %}
             <h2>{{ section.grouper.number }}. {{ section.grouper.title }}</h2>
         {% endif %}
-        <p>{{ section.grouper.text|safe }}</p>
+        <p>{{ section.text|safe }}</p>
         <ol>
-            {% for question in section.list %}
+            {% for question in section.question_set %}
                 {% if question.text %}
                     <li>
                         <a href="/question/{{ question.pk }}/">{{ question.text|safe }}</a>
