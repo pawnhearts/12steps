@@ -15,8 +15,21 @@
     {{ step.text|safe }}
 </div>
 {% regroup object_list by section as sections %}
+    <div id="accordion">
 {% for section in sections %}
-{% if section.grouper.show_header %}<h2>{{ section.grouper.number }}. {{ section.grouper.title }}</h2>{% endif %}
+
+    {% if section.grouper.show_header and not forloop.first %}
+        </div></div></div>
+    {% endif %}
+    {% if section.grouper.show_header %}
+    <div class="card">
+    <div class="card-header" id="heading{{ section.pk }}">
+      <h5 class="mb-0">
+        <button class="btn btn-link" data-toggle="collapse" data-target="#collapse{{ section.pk }}" aria-expanded="true" aria-controls="collapse{{ section.pk }}">
+            {{ section.grouper.number }}. {{ section.grouper.title }}</button></h5></div>
+        <div id="collapse{{ section.pk }}" class="collapse show" aria-labelledby="heading{{ section.pk }}" data-parent="#accordion">
+      <div class="card-body">
+    {% endif %}
     <p>{{ section.grouper.text|safe }}</p>
 <ol>
 {% for question in section.list %}
@@ -30,5 +43,9 @@
     </li>
 {% endfor %}
 </ol>
+    {% if forloop.last %}
+        </div></div></div>
+    {% endif %}
 {% endfor %}
+        </div>
 {% endblock %}
