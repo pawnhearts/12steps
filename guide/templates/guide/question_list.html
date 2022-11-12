@@ -33,6 +33,7 @@
     <p>{{ section.grouper.text|safe }}</p>
 <ol>
 {% for question in section.list %}
+    {% if question.text %}
     <li>
     <a href="/question/{{ question.pk }}/">{{ question.text|safe }}</a>
     {% if question.answer_count %}
@@ -41,6 +42,7 @@
         </span>
     {% endif %}
     </li>
+    {% endif %}
 {% endfor %}
 </ol>
     {% if forloop.last %}
