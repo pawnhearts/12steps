@@ -56,7 +56,7 @@ class SectionListView(ListView):
         qs = super().get_queryset().filter(step_id=self.kwargs.get('pk'))
         if self.request.user.is_authenticated:
             for section in qs:
-                section.question_set = section.question_set.all().with_answer_count(self.request.user)
+                section.questions = section.question_set.all().with_answer_count(self.request.user)
         return qs
 
 

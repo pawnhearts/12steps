@@ -21,7 +21,7 @@
         {% endif %}
         <p>{{ section.text|safe }}</p>
         <ol>
-            {% for question in section.question_set %}
+            {% for question in section.questions %}
                 {% if question.text %}
                     <li>
                         <a href="/question/{{ question.pk }}/">{{ question.text|safe }}</a>
