@@ -42,7 +42,7 @@ class Section(models.Model):
     step = models.ForeignKey(Step, verbose_name='Шаг', on_delete=models.CASCADE)
     number = models.PositiveSmallIntegerField('Номер', blank=True, db_index=True)
     title = models.CharField('Название', max_length=256)
-    text = HTMLField('Текст', blank=True, null=True)
+    # text = HTMLField('Текст', blank=True, null=True)
 
     def __str__(self):
         return f'{self.step.get_program_display()}. Шаг {self.step.number}. {self.title}'
