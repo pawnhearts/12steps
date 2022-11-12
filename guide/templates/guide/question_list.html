@@ -23,11 +23,11 @@
     {% endif %}
     {% if section.grouper.show_header %}
     <div class="card">
-    <div class="card-header" id="heading{{ section.pk }}">
+    <div class="card-header" id="heading{{ section.grouper.pk }}">
       <h5 class="mb-0">
-        <button class="btn btn-link" data-toggle="collapse" data-target="#collapse{{ section.pk }}" aria-expanded="true" aria-controls="collapse{{ section.pk }}">
+        <button class="btn btn-link" data-toggle="collapse" data-target="#collapse{{ section.grouper.pk }}" aria-expanded="true" aria-controls="collapse{{ section.grouper.pk }}">
             {{ section.grouper.number }}. {{ section.grouper.title }}</button></h5></div>
-        <div id="collapse{{ section.pk }}" class="collapse show" aria-labelledby="heading{{ section.pk }}" data-parent="#accordion">
+        <div id="collapse{{ section.grouper.pk }}" class="collapse show" aria-labelledby="heading{{ section.grouper.pk }}" data-parent="#accordion">
       <div class="card-body">
     {% endif %}
     <p>{{ section.grouper.text|safe }}</p>
