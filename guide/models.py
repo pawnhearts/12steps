@@ -111,7 +111,7 @@ class Answer(models.Model):
     thoughts = models.TextField('Мысли', blank=True, null=True)
     actions = models.TextField('Действия', blank=True, null=True)
     feelings = models.ManyToManyField(Feeling, blank=True, verbose_name='Чувства')
-    publish = models.BooleanField('Опубликовать в примерах', default=False, db_index=True, help_text='Опубликовать в примерах')
+    publish = models.BooleanField('Опубликовать', default=False, db_index=True, help_text='Опубликовать свой пример для помощи другим зависимым с пониманием вопроса')
     show_on_site = models.BooleanField('Прошло модерацию', default=False)
 
     def __str__(self):
