@@ -70,7 +70,7 @@ class Question(models.Model):
     section = models.ForeignKey(Section, verbose_name='Раздел', on_delete=models.CASCADE)
     number = models.PositiveSmallIntegerField('Номер', blank=True, db_index=True)
     # title = models.CharField('Заголовок', max_length=512, blank=True, null=True)
-    text = HTMLField('Текст вопроса', blank=True, null=True)
+    text = models.TextField('Текст вопроса', blank=True, null=True)
     pre_text = HTMLField('Текст перед вопроса', blank=True, null=True)
     post_text = HTMLField('Текст после вопроса', blank=True, null=True)
 
