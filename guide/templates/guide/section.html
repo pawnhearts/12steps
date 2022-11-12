@@ -1,5 +1,5 @@
 {% if section.show_header %}
-    <h2>{{ section.number }}. {{ section.title }}</h2>
+    <h2>{{ section.number }}. <a href="/section/{{ section.pk }}/">{{ section.title }}</a></h2>
 {% endif %}
 <p>{{ section.text|safe }}</p>
 <ol>

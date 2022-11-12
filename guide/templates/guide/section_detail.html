@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}12 шагов - {{ section.step.get_program_display }}{% endblock %}
+
+{% block nav %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/steps/{{ section.step.program }}/">{{ section.step.get_program_display }}</a></li>
+            <li class="breadcrumb-item"><a href="/questions/{{ section.step.pk }}/">{{ section.step.title }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ section.title }}</li>
+        </ol>
+    </nav>
+{% endblock %}
+{% block content %}
+    {% include 'guide/section.html' with section=section questions=section.questions %}
+{% endblock %}

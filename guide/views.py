@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.views import View
-from django.views.generic import ListView, CreateView, DeleteView, UpdateView
+from django.views.generic import ListView, CreateView, DeleteView, UpdateView, DetailView
 from django_select2 import forms as s2forms
 
 from guide.models import Step, Answer, Question, Feeling, AnswerStatus, AnswerStatuses, Programs, Section
@@ -58,6 +58,16 @@ class SectionListView(ListView):
             for section in qs:
                 section.questions = section.question_set.all().with_answer_count(self.request.user)
         return qs
+
+
+class SectionDetailView(DetailView):
+    model = Section
+
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+        if self.request.user.is_authenticated:
+            self.object.questions = self.object.question_set.all().with_answer_count(self.request.user)
+        return self.object
 
 
 class FeelingsWidget(s2forms.ModelSelect2TagWidget):
