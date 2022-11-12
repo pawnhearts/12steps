@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Count, Q, Subquery, OuterRef
+from tinymce.models import HTMLField
 
 
 class StepQuerySet(models.QuerySet):
@@ -21,7 +22,7 @@ class Step(models.Model):
     program = models.CharField('Программа', max_length=4, choices=Programs.choices, default=Programs.NA)
     number = models.PositiveSmallIntegerField('Номер', blank=True, db_index=True)
     title = models.CharField('Название', max_length=255)
-    text = models.TextField('Текст', blank=True, null=True)
+    text = HTMLField('Текст', blank=True, null=True)
 
     def __str__(self):
         return f'{self.get_program_display()}. Шаг {self.number}. {self.title}'
@@ -49,7 +50,7 @@ class Section(models.Model):
     number = models.PositiveSmallIntegerField('Номер', blank=True, db_index=True)
     show_header = models.BooleanField('Показывать заголовок', default=True)
     title = models.CharField('Название', max_length=256)
-    text = models.TextField('Текст', blank=True, null=True)
+    text = HTMLField('Текст', blank=True, null=True)
 
     def __str__(self):
         return f'{self.step.get_program_display()}. Шаг {self.step.number}. {self.title}'
@@ -77,7 +78,7 @@ class Question(models.Model):
     section = models.ForeignKey(Section, verbose_name='Раздел', on_delete=models.CASCADE)
     number = models.PositiveSmallIntegerField('Номер', blank=True, db_index=True)
     # title = models.CharField('Заголовок', max_length=512, blank=True, null=True)
-    text = models.TextField('Текст вопроса', blank=True, null=True)
+    text = HTMLField('Текст вопроса', blank=True, null=True)
 
     def __str__(self):
         return f'{self.section.step.get_program_display()}. Шаг {self.section.step.number}. Раздел {self.section.title}. Вопрос {self.number}'
