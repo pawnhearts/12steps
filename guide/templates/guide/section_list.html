@@ -15,6 +15,6 @@
         {{ step.text|safe }}
     </div>
     {% for section in object_list %}
-{% include 'guide/section.html' with section=section questions=section.answers %}
+{% include 'guide/section.html' with section=section questions=section.questions %}
     {% endfor %}
 {% endblock %}
