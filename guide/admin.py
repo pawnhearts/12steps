@@ -57,6 +57,6 @@ class FeelingAdmin(admin.ModelAdmin):
 
 @admin.register(Answer)
 class AnswerAdmin(admin.ModelAdmin):
-    list_display = ('user', 'question')
-    list_filter = ('user',)
+    list_display = ('user', 'question', 'publish', 'show_on_site')
+    list_filter = ('user', 'publish', 'show_on_site')
     filter_horizontal = ('feelings',)

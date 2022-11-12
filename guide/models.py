@@ -88,6 +88,9 @@ class Question(models.Model):
             self.number = (Question.objects.filter(section=self.section).aggregate(n=models.Max('number'))['n'] or 0) + 1
         super().save(**kwargs)
 
+    def get_examples(self):
+        return self.answer_set.filter(publish=True, show_on_site=True)
+
     class Meta:
         verbose_name = "Вопрос"
         verbose_name_plural = "Вопросы"
@@ -114,6 +117,8 @@ class Answer(models.Model):
     thoughts = models.TextField('Мысли', blank=True, null=True)
     actions = models.TextField('Действия', blank=True, null=True)
     feelings = models.ManyToManyField(Feeling, blank=True, verbose_name='Чувства')
+    publish = models.BooleanField('Опубликовать в примерах', default=True, db_index=True)
+    show_on_site = models.BooleanField('Прошло модерацию', default=False)
 
     def __str__(self):
         return f'{self.user} {self.question}'

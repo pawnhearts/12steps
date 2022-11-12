@@ -23,6 +23,16 @@ div.form-check{display:inline-block;}
 </style>
     <div>
     <h3>{{ question.number }}. {{ question.text|safe }}</h3>
+        {% if examples %}
+            <div>
+            <h5>Примеры:</h5>
+            <ul class="list-group">
+                {% for answer in examples %}
+                    {% include 'guide/answer.html' with answer=answer %}
+                {% endfor %}
+            </ul>
+            </div>
+        {% endif %}
     {% if user.is_authenticated %}
     {% if answers %}
         <ul class="list-group">
