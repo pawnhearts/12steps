@@ -53,7 +53,7 @@ class SectionListView(ListView):
         return context
 
     def get_queryset(self):
-        qs = super().get_queryset().filter(step_id=self.kwargs.get('pk'))
+        qs = super().get_queryset().filter(step_id=self.kwargs.get('pk')).select_related('question')
         if self.request.user.is_authenticated:
             for section in qs:
                 section.question_set = section.question_set.all().with_answer_count(self.request.user)
