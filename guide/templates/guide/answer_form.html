@@ -34,7 +34,7 @@ div.form-check{display:inline-block;}
 <form method="post">
     {% csrf_token %}
       {{ form|crispy }}
-    <h2 class="bg-warning" style="display:none;" id="warning">Внимание - ваш вопрос будет виден всем пользователям</h2>
+    <h4 class="bg-warning" style="display:none;" id="warning">Внимание - ваш вопрос будет виден всем пользователям</h4>
     <button type="submit" class="btn btn-success">
       Сохранить
     </button>
