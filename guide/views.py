@@ -44,20 +44,20 @@ class QuestionListView(ListView):
         return qs
 
 
-class SectionListView(ListView):
-    model = Section
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['step'] = get_object_or_404(Step, pk=self.kwargs.get('pk'))
-        return context
-
-    def get_queryset(self):
-        qs = super().get_queryset().filter(step_id=self.kwargs.get('pk'))
-        if self.request.user.is_authenticated:
-            for section in qs:
-                section.questions = section.question_set.all().with_answer_count(self.request.user)
-        return qs
+# class SectionListView(ListView):
+#     model = Section
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['step'] = get_object_or_404(Step, pk=self.kwargs.get('pk'))
+#         return context
+#
+#     def get_queryset(self):
+#         qs = super().get_queryset().filter(step_id=self.kwargs.get('pk'))
+#         if self.request.user.is_authenticated:
+#             for section in qs:
+#                 section.questions = section.question_set.all().with_answer_count(self.request.user)
+#         return qs
 
 
 class SectionDetailView(DetailView):
