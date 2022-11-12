@@ -22,7 +22,7 @@
 div.form-check{display:inline-block;}
 </style>
     <div>
-    <h3>{{ question.number }}. {{ question.text }}</h3>
+    <h3>{{ question.number }}. {{ question.text|safe }}</h3>
     {% if user.is_authenticated %}
     {% if answers %}
         <ul class="list-group">
