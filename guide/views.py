@@ -8,7 +8,7 @@ from django.views import View
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView
 from django_select2 import forms as s2forms
 
-from guide.models import Step, Answer, Question, Feeling, AnswerStatus, AnswerStatuses, Programs
+from guide.models import Step, Answer, Question, Feeling, AnswerStatus, AnswerStatuses, Programs, Section
 
 
 class StepListView(ListView):
@@ -39,6 +39,21 @@ class QuestionListView(ListView):
 
     def get_queryset(self):
         qs = super().get_queryset().filter(section__step_id=self.kwargs.get('pk'))
+        if self.request.user.is_authenticated:
+            qs = qs.with_answer_count(self.request.user)
+        return qs
+
+
+class SectionListView(ListView):
+    model = Section
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['step'] = get_object_or_404(Step, pk=self.kwargs.get('pk'))
+        return context
+
+    def get_queryset(self):
+        qs = super().get_queryset().filter(step_id=self.kwargs.get('pk'))
         if self.request.user.is_authenticated:
             qs = qs.with_answer_count(self.request.user)
         return qs

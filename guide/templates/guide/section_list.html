@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}12 шагов - {{ step.get_program_display }}{% endblock %}
+
+{% block nav %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/steps/{{ step.program }}">{{ step.get_program_display }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ step.title }}</li>
+        </ol>
+    </nav>
+{% endblock %}
+{% block content %}
+    <div>
+        {{ step.text|safe }}
+    </div>
+    {% for section in object_list %}
+
+        {% if section.grouper.show_header %}
+            <h2>{{ section.grouper.number }}. {{ section.grouper.title }}</h2>
+        {% endif %}
+        <p>{{ section.grouper.text|safe }}</p>
+        <ol>
+            {% for question in section.list %}
+                {% if question.text %}
+                    <li>
+                        <a href="/question/{{ question.pk }}/">{{ question.text|safe }}</a>
+                        {% if question.answer_count %}
+                            <span style="background-color: {% if question.status == 'COMPLETED' %}lightgreen{% endif %}{% if question.status == 'WORK' %}yellow{% endif %}">
+            Примеров: {{ question.answer_count }}
+        </span>
+                        {% endif %}
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ol>
+    {% endfor %}
+{% endblock %}
