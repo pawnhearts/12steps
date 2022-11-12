@@ -34,12 +34,19 @@ div.form-check{display:inline-block;}
 <form method="post">
     {% csrf_token %}
       {{ form|crispy }}
+    <h2 class="bg-warning" style="display:none;" id="warning">Внимание - ваш вопрос будет виден всем пользователям</h2>
     <button type="submit" class="btn btn-success">
       Сохранить
     </button>
 </form>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         {{ form.media.js }}
+        <script>
+        $('#id_publish').change(function(){
+            if(this.checked) $('#warning').show();
+            else $('#warning').hide();
+        });
+        </script>
     {% if show_close_button %}
         <form method="post" action="/question/{{ question.pk }}/close/">{% csrf_token %}
             <button type="submit" class="btn btn-danger">
@@ -60,4 +67,5 @@ div.form-check{display:inline-block;}
     {% else %}
         <a href="/accounts/register/">Зарегестрируйтесь</a> или <a href="/accounts/login/">войдите</a>, чтобы отвечать на вопросы.
     {% endif %}
+    </div>
 {% endblock %}
