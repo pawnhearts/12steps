@@ -67,7 +67,7 @@ class FeelingsWidget(s2forms.ModelSelect2TagWidget):
 
 class AnswerFormMixin:
     model = Answer
-    fields = ['situation', 'thoughts', 'feelings', 'actions']
+    fields = ['situation', 'thoughts', 'feelings', 'actions', 'publish']
 
     def get_form(self, *args, **kwargs):
         form = super().get_form(*args, **kwargs)
