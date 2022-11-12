@@ -24,7 +24,7 @@ div.form-check{display:inline-block;}
     <div>
     <h3>{{ question.number }}. {{ question.text|safe }}</h3>
         {% if examples %}
-            <div>
+            <div class="bg-secondary">
             <h5>Примеры:</h5>
             <ul class="list-group">
                 {% for answer in examples %}
