@@ -17,12 +17,12 @@
     <dd class="col-sm-9">{{ answer.actions }}</dd>
 </dl>
 {% if answer.user == user and not answer.show_on_site %}
-    <form method="get" action="/answer/{{ answer.pk }}/">
+    <form method="get" action="/answer/{{ answer.pk }}/" style="display: inline;">
         <button type="submit" class="btn btn-primary">
             Редактировать
         </button>
     </form>
-<form method="post" action="/answer/{{ answer.pk }}/delete/">{% csrf_token %}
+<form method="post" action="/answer/{{ answer.pk }}/delete/" style="display: inline;">{% csrf_token %}
     <button type="submit" class="btn btn-danger">
         Удалить
     </button>

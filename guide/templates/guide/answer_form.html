@@ -38,6 +38,13 @@ div.form-check{display:inline-block;}
     <button type="submit" class="btn btn-success">
       Сохранить
     </button>
+    {% if show_close_button %}
+        <form method="post" action="/question/{{ question.pk }}/close/" style="display: inline;">{% csrf_token %}
+            <button type="submit" class="btn btn-danger">
+                {% if is_closed %}В работу{% else %}Закрыть{% endif %}
+            </button>
+        </form>
+    {% endif %}
 </form>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         {{ form.media.js }}
@@ -47,13 +54,6 @@ div.form-check{display:inline-block;}
             else $('#warning').hide();
         });
         </script>
-    {% if show_close_button %}
-        <form method="post" action="/question/{{ question.pk }}/close/">{% csrf_token %}
-            <button type="submit" class="btn btn-danger">
-                {% if is_closed %}В работу{% else %}Закрыть{% endif %}
-            </button>
-        </form>
-    {% endif %}
         {% if examples %}
             <div class="bg-secondary">
                 <h5>Примеры ответов:</h5>
