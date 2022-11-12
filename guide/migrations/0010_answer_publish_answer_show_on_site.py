@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
             model_name="answer",
             name="publish",
             field=models.BooleanField(
-                db_index=True, default=True, verbose_name="Опубликовать в примерах"
+                db_index=True, default=False, verbose_name="Опубликовать в примерах"
             ),
         ),
         migrations.AddField(
