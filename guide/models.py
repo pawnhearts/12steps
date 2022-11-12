@@ -72,6 +72,8 @@ class Question(models.Model):
     number = models.PositiveSmallIntegerField('Номер', blank=True, db_index=True)
     # title = models.CharField('Заголовок', max_length=512, blank=True, null=True)
     text = HTMLField('Текст вопроса', blank=True, null=True)
+    pre_text = HTMLField('Текст перед вопроса', blank=True, null=True)
+    post_text = HTMLField('Текст после вопроса', blank=True, null=True)
 
     def __str__(self):
         return f'{self.section.step.get_program_display()}. Шаг {self.section.step.number}. Раздел {self.section.title}. Вопрос {self.number}'

@@ -5,6 +5,11 @@
 <ol>
     {% for question in questions %}
         {% if question.text %}
+            {% if question.pre_text %}
+                </ol>
+                <p>{{ question.pre_text|safe }}</p>
+                <ol>
+            {% endif %}
             <li>
                 <a href="/question/{{ question.pk }}/">{{ question.text|safe }}</a>
                 {% if question.answer_count %}
@@ -13,6 +18,11 @@
         </span>
                 {% endif %}
             </li>
+        {% if question.post_text %}
+            </ol>
+            <p>{{ question.pre_text|safe }}</p>
+            <ol>
+        {% endif %}
         {% endif %}
     {% endfor %}
 </ol>
