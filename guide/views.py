@@ -94,7 +94,9 @@ class AnswerCreateView(AnswerFormMixin, CreateView):
             context['is_closed'] = context['question'].answerstatus_set.filter(
                 status=AnswerStatuses.COMPLETED, user=self.request.user
             )
-            context['answers'] = Answer.objects.filter(question=context['question'], user=self.request.user)
+            context['answers'] = Answer.objects.filter(
+                question=context['question'], user=self.request.user, show_on_site=False
+            )
         return context
 
     def form_valid(self, form):
@@ -120,7 +122,6 @@ class AnswerUpdateView(AnswerFormMixin, LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['question'] = self.object.question
-        context['examples'] = context['question'].get_examples()
         return context
 
     def get_success_url(self):
