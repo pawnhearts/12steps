@@ -15,24 +15,6 @@
         {{ step.text|safe }}
     </div>
     {% for section in object_list %}
-
-        {% if section.show_header %}
-            <h2>{{ section.grouper.number }}. {{ section.grouper.title }}</h2>
-        {% endif %}
-        <p>{{ section.text|safe }}</p>
-        <ol>
-            {% for question in section.questions %}
-                {% if question.text %}
-                    <li>
-                        <a href="/question/{{ question.pk }}/">{{ question.text|safe }}</a>
-                        {% if question.answer_count %}
-                            <span style="background-color: {% if question.status == 'COMPLETED' %}lightgreen{% endif %}{% if question.status == 'WORK' %}yellow{% endif %}">
-            Примеров: {{ question.answer_count }}
-        </span>
-                        {% endif %}
-                    </li>
-                {% endif %}
-            {% endfor %}
-        </ol>
+{% include 'guide/section.html' with section=section questions=section.answers %}
     {% endfor %}
 {% endblock %}
