@@ -79,9 +79,9 @@ class Question(models.Model):
         return f'{self.section.step.get_program_display()}. Шаг {self.section.step.number}. Раздел {self.section.title}. Вопрос {self.number}'
 
     def save(self, **kwargs):
-        if self.pre_text and not BeautifulSoup(self.pre_text).text:
+        if self.pre_text and not BeautifulSoup(self.pre_text, features="html.parser").text:
             self.pre_text = None
-        if self.post_text and not BeautifulSoup(self.post_text).text:
+        if self.post_text and not BeautifulSoup(self.post_text, features="html.parser").text:
             self.post_text = None
         if not self.number:
             self.number = (Question.objects.filter(section=self.section).aggregate(n=models.Max('number'))['n'] or 0) + 1
