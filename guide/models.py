@@ -1,3 +1,4 @@
+from bs4 import BeautifulSoup
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Count, Q, Subquery, OuterRef
@@ -71,13 +72,17 @@ class Question(models.Model):
     number = models.PositiveSmallIntegerField('Номер', blank=True, db_index=True)
     # title = models.CharField('Заголовок', max_length=512, blank=True, null=True)
     text = models.TextField('Текст вопроса', blank=True, null=True)
-    pre_text = HTMLField('Текст перед вопроса', blank=True, null=True)
+    pre_text = HTMLField('Текст перед вопросом', blank=True, null=True)
     post_text = HTMLField('Текст после вопроса', blank=True, null=True)
 
     def __str__(self):
         return f'{self.section.step.get_program_display()}. Шаг {self.section.step.number}. Раздел {self.section.title}. Вопрос {self.number}'
 
     def save(self, **kwargs):
+        if not BeautifulSoup(self.pre_text).text:
+            self.pre_text = None
+        if not BeautifulSoup(self.post_text).text:
+            self.post_text = None
         if not self.number:
             self.number = (Question.objects.filter(section=self.section).aggregate(n=models.Max('number'))['n'] or 0) + 1
         super().save(**kwargs)
