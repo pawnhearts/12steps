@@ -117,7 +117,7 @@ class AnswerCreateView(AnswerFormMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['question'] = get_object_or_404(Question.objects.select_related('section', 'section__step'), pk=self.kwargs.get('pk'))
-        context['examples'] = context['question'].get_examples()
+        context['examples'] = context['question'].get_examples(user=self.request.user if self.request.user.is_authenticated else None)
         if self.request.user.is_authenticated:
             context['show_close_button'] = True
             context['is_closed'] = context['question'].answerstatus_set.filter(
