@@ -87,8 +87,13 @@ class Question(models.Model):
             self.number = (Question.objects.filter(section=self.section).aggregate(n=models.Max('number'))['n'] or 0) + 1
         super().save(**kwargs)
 
-    def get_examples(self):
-        return self.answer_set.filter(publish=True, show_on_site=True)
+    def get_examples(self, user=None):
+        qs = self.answer_set.filter(publish=True, show_on_site=True).annotate(
+            rating=models.Sum('answervote__vote')
+        ).order_by('-rating')
+        if user:
+            qs = qs.annotate(vote=Subquery(AnswerVote.objects.filter(answer=OuterRef('pk'), user=user).values('vote')[:1]))
+        return qs
 
     class Meta:
         verbose_name = "Вопрос"
@@ -145,3 +150,16 @@ class AnswerStatus(models.Model):
     class Meta:
         verbose_name = "Статус ответа"
         verbose_name_plural = "Статусы ответа"
+
+
+class AnswerVote(models.Model):
+    user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
+    answer = models.ForeignKey(Answer, verbose_name='Ответ', on_delete=models.CASCADE)
+    vote = models.SmallIntegerField('Голосование', default=1)
+
+    def __str__(self):
+        return f'{self.user} {self.answer} {self.vote}'
+
+    class Meta:
+        verbose_name = "Голос за ответ"
+        verbose_name_plural = "Голоса за ответа"

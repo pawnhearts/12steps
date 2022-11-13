@@ -1,5 +1,5 @@
 from django import forms
-from django.db.models import Q
+from django.db.models import Q, Prefetch
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -8,7 +8,7 @@ from django.views import View
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView, DetailView
 from django_select2 import forms as s2forms
 
-from guide.models import Step, Answer, Question, Feeling, AnswerStatus, AnswerStatuses, Programs, Section
+from guide.models import Step, Answer, Question, Feeling, AnswerStatus, AnswerStatuses, Programs, Section, AnswerVote
 
 
 class StepListView(ListView):
@@ -38,7 +38,7 @@ class QuestionListView(ListView):
         return context
 
     def get_queryset(self):
-        qs = super().get_queryset().filter(section__step_id=self.kwargs.get('pk'))
+        qs = super().get_queryset().select_related('section').filter(section__step_id=self.kwargs.get('pk'))
         if self.request.user.is_authenticated:
             qs = qs.with_answer_count(self.request.user)
         return qs
@@ -55,8 +55,11 @@ class QuestionListView(ListView):
 #     def get_queryset(self):
 #         qs = super().get_queryset().filter(step_id=self.kwargs.get('pk'))
 #         if self.request.user.is_authenticated:
-#             for section in qs:
-#                 section.questions = section.question_set.all().with_answer_count(self.request.user)
+#             qs = qs.prefetch_related(Prefetch('question_set', queryset=Question.objects.with_answer_count(self.request.user)))
+#             # for section in qs:
+#             #     section.questions = section.question_set.all().with_answer_count(self.request.user)
+#         else:
+#             qs = qs.prefetch_related('question_set')
 #         return qs
 
 
@@ -113,7 +116,7 @@ class AnswerCreateView(AnswerFormMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['question'] = get_object_or_404(Question, pk=self.kwargs.get('pk'))
+        context['question'] = get_object_or_404(Question.objects.select_related('section', 'section__step'), pk=self.kwargs.get('pk'))
         context['examples'] = context['question'].get_examples()
         if self.request.user.is_authenticated:
             context['show_close_button'] = True
@@ -177,3 +180,16 @@ class AnswerCloseView(LoginRequiredMixin, View):
             answerstatus.status = AnswerStatuses.COMPLETED
         answerstatus.save()
         return HttpResponseRedirect(f'/question/{question.pk}/')
+
+
+class AnswerVoteView(LoginRequiredMixin, View):
+    def get(self, *args, **kwargs):
+        val = 1 if self.kwargs.get('vote') == 'up' else -1
+        answer = get_object_or_404(Answer, pk=self.kwargs.get('pk'))
+        vote, created = AnswerVote.objects.get_or_create(answer=answer, user=self.request.user)
+        if not created and vote.vote == val:
+            vote.delete()
+        else:
+            vote.vote = val
+            vote.save()
+        return HttpResponseRedirect(f'/question/{answer.question.pk}/')

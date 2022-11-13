@@ -28,4 +28,9 @@
     </button>
 </form>
 {% endif %}
+{% if user.is_authenticated and answer.show_on_site %}
+    Голоса: {{ answer.rating }}
+    <a href="/vote/{{ answer.pk }}/up/" style="{% if answer.vote == 1 %}font-weight: bold;{% endif %}">+1</a>
+    <a href="/vote/{{ answer.pk }}/down/" style="{% if answer.vote == -1 %}font-weight: bold;{% endif %}">-1</a>
+{% endif %}
 </li>
