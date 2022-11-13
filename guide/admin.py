@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.db.models import Sum
 from django.urls import reverse
 from guide.models import Step, Question, Answer, Feeling, Section
 from django.contrib.flatpages.admin import FlatPageAdmin
@@ -57,6 +58,9 @@ class FeelingAdmin(admin.ModelAdmin):
 
 @admin.register(Answer)
 class AnswerAdmin(admin.ModelAdmin):
-    list_display = ('user', 'question', 'publish', 'show_on_site')
+    list_display = ('user', 'question', 'publish', 'show_on_site', 'rating')
     list_filter = ('user', 'publish', 'show_on_site')
     filter_horizontal = ('feelings',)
+
+    def rating(self, obj):
+        return obj.answervote_set.aggregate(rating=Sum('vote', default=0))['rating']
