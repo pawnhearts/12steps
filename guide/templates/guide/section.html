@@ -1,5 +1,5 @@
 <h2>{{ section.number }}. <a href="/section/{{ section.pk }}/">{{ section.title }}</a></h2>
-<ol>
+<ol start="{{ questions.0.number }}">
     {% for question in questions %}
         {% if question.text %}
             {% if question.pre_text %}
