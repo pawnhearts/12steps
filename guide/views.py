@@ -30,7 +30,7 @@ class StepListView(ListView):
 
 
 class QuestionListView(ListView):
-    model = Question.objects.order_by('section__step__number', 'section__number', 'number')
+    model = Question
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -41,6 +41,7 @@ class QuestionListView(ListView):
         qs = super().get_queryset().select_related('section').filter(section__step_id=self.kwargs.get('pk'))
         if self.request.user.is_authenticated:
             qs = qs.with_answer_count(self.request.user)
+        qs = qs.order_by('section__step__number', 'section__number', 'number')
         return qs
 
 
