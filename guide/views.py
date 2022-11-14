@@ -30,7 +30,7 @@ class StepListView(ListView):
 
 
 class QuestionListView(ListView):
-    model = Question
+    model = Question.objects.order_by('section__step__number', 'section__number', 'number')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

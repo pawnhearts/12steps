@@ -98,7 +98,7 @@ class Question(models.Model):
     class Meta:
         verbose_name = "Вопрос"
         verbose_name_plural = "Вопросы"
-        ordering = ['section__step__number', 'section__number', 'number']
+        ordering = ['number']
 
 
 class Feeling(models.Model):
