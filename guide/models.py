@@ -37,6 +37,7 @@ class Step(models.Model):
         verbose_name = "Шаг"
         verbose_name_plural = "Шаги"
         ordering = ['number']
+        unique_together = [['program', 'number']]
 
 
 class Section(models.Model):
@@ -57,6 +58,7 @@ class Section(models.Model):
         verbose_name = "Раздел"
         verbose_name_plural = "Разделы"
         ordering = ['step__number', 'number']
+        unique_together = [['step', 'number']]
 
 
 class QuestionQuerySet(models.QuerySet):
@@ -99,6 +101,7 @@ class Question(models.Model):
         verbose_name = "Вопрос"
         verbose_name_plural = "Вопросы"
         ordering = ['section__step__number', 'section__number', 'number']
+        unique_together = [['section', 'number']]
 
 
 class Feeling(models.Model):

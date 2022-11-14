@@ -1,4 +1,4 @@
-<h2>{{ section.number }}. <a href="/section/{{ section.pk }}/">{{ section.title }}</a></h2>
+<h2>{{ section.number }}. <a href="{% url 'section-detail' section.pk %}/">{{ section.title }}</a></h2>
 <ol start="{{ questions.0.number }}">
     {% for question in questions %}
         {% if question.text %}
@@ -8,7 +8,7 @@
                 <ol start="{{ question.number }}">
             {% endif %}
             <li>
-                <a href="/question/{{ question.pk }}/">{{ question.text|safe }}</a>
+                <a href="{% url 'answer-create' question.pk %}/">{{ question.text|safe }}</a>
                 {% if question.answer_count %}
                     <span style="background-color: {% if question.status == 'COMPLETED' %}lightgreen{% endif %}{% if question.status == 'WORK' %}yellow{% endif %}">
             Примеров: {{ question.answer_count }}

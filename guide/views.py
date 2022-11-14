@@ -4,6 +4,7 @@ from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
+from django.urls import reverse
 from django.views import View
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView, DetailView
 from django_select2 import forms as s2forms
@@ -180,7 +181,7 @@ class AnswerCloseView(LoginRequiredMixin, View):
         else:
             answerstatus.status = AnswerStatuses.COMPLETED
         answerstatus.save()
-        return HttpResponseRedirect(f'/question/{question.pk}/')
+        return HttpResponseRedirect(reverse('answer-create', args=[question.pk]))
 
 
 class AnswerVoteView(LoginRequiredMixin, View):
@@ -193,4 +194,4 @@ class AnswerVoteView(LoginRequiredMixin, View):
         else:
             vote.vote = val
             vote.save()
-        return HttpResponseRedirect(f'/question/{answer.question.pk}/')
+        return HttpResponseRedirect(reverse('answer-create', args=[answer.question.pk]))

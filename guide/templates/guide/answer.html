@@ -17,12 +17,12 @@
     <dd class="col-sm-9">{{ answer.actions }}</dd>
 </dl>
 {% if answer.user == user and not answer.show_on_site %}
-    <form method="get" action="/answer/{{ answer.pk }}/" style="display: inline;">
+    <form method="get" action="{% url 'answer-update' answer.pk %}" style="display: inline;">
         <button type="submit" class="btn btn-primary">
             Редактировать
         </button>
     </form>
-<form method="post" action="/answer/{{ answer.pk }}/delete/" style="display: inline;">{% csrf_token %}
+<form method="post" action="{% url 'answer-delete' answer.pk %}" style="display: inline;">{% csrf_token %}
     <button type="submit" class="btn btn-danger">
         Удалить
     </button>
@@ -30,7 +30,7 @@
 {% endif %}
 {% if user.is_authenticated and answer.show_on_site %}
     Голоса: {{ answer.rating }}
-    <a href="/vote/{{ answer.pk }}/up/" style="{% if answer.vote == 1 %}font-weight: bold;{% endif %}">+1</a>
-    <a href="/vote/{{ answer.pk }}/down/" style="{% if answer.vote == -1 %}font-weight: bold;{% endif %}">-1</a>
+    <a href="{% url 'answer-vote' answer.pk 'up' %}" style="{% if answer.vote == 1 %}font-weight: bold;{% endif %}">+1</a>
+    <a href="{% url 'answer-vote' answer.pk 'down' %}" style="{% if answer.vote == -1 %}font-weight: bold;{% endif %}">-1</a>
 {% endif %}
 </li>
