@@ -11,8 +11,8 @@
 {% block nav %}
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/steps/{{ question.section.step.program }}/">{{ question.section.step.get_program_display }}</a></li>
-            <li class="breadcrumb-item"><a href="/questions/{{ question.section.step.pk }}/">{{ question.section.step.title }}</a></li>
+            <li class="breadcrumb-item"><a href="/steps/{{ question.section.step.program }}">{{ question.section.step.get_program_display }}</a></li>
+            <li class="breadcrumb-item"><a href="/questions/{{ question.section.step.pk }}">{{ question.section.step.title }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{{ question.section.title }}</li>
         </ol>
     </nav>
