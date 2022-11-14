@@ -55,7 +55,7 @@ class SectionListView(ListView):
     def get_queryset(self):
         qs = super().get_queryset().filter(step_id=self.kwargs.get('pk'))
         if self.request.user.is_authenticated:
-            qs = qs.prefetch_related(Prefetch('question_set', queryset=Question.objects.with_answer_count(self.request.user)))
+            qs = qs.prefetch_related(Prefetch('question_set', queryset=Question.objects.with_answer_count(self.request.user).order_by('number')))
             # for section in qs:
             #     section.questions = section.question_set.all().with_answer_count(self.request.user)
         else:
