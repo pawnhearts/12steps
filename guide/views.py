@@ -71,7 +71,7 @@ class SectionDetailView(DetailView):
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
         if self.request.user.is_authenticated:
-            self.object.questions = self.object.question_set.all().with_answer_count(self.request.user)
+            self.object.questions = self.object.question_set.all().with_answer_count(self.request.user).order_by('number')
         return self.object
 
 
