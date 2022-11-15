@@ -23,7 +23,7 @@ div.form-check{display:inline-block;}
 </style>
     <div>
     <h3>{{ question.number }}. {{ question.text|safe }}</h3>
-    {% if user.is_authenticated %}
+{% if user.is_authenticated %}
     {% if answers %}
         <ul class="list-group">
             {% for answer in answers %}
@@ -54,6 +54,9 @@ div.form-check{display:inline-block;}
             else $('#warning').hide();
         });
         </script>
+    {% else %}
+        <a href="/accounts/register/">Зарегестрируйтесь</a> или <a href="/accounts/login/">войдите</a>, чтобы отвечать на вопросы.
+    {% endif %}
         {% if examples %}
             <div class="bg-secondary">
                 <h5>Примеры ответов:</h5>
@@ -64,8 +67,5 @@ div.form-check{display:inline-block;}
                 </ul>
             </div>
         {% endif %}
-    {% else %}
-        <a href="/accounts/register/">Зарегестрируйтесь</a> или <a href="/accounts/login/">войдите</a>, чтобы отвечать на вопросы.
-    {% endif %}
     </div>
 {% endblock %}
