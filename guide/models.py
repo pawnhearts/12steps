@@ -92,8 +92,8 @@ class Question(models.Model):
     def get_examples(self, user=None):
         qs = self.answer_set.filter(publish=True, show_on_site=True).annotate(
             rating=models.Sum('answervote__vote', default=0),
-            votes_yes=models.Count('answervote', filter=Q(vote=1)),
-            votes_no=models.Count('answervote', filter=Q(vote=-1)),
+            votes_yes=models.Count('answervote', filter=Q(answervote__vote=1)),
+            votes_no=models.Count('answervote', filter=Q(answervote__vote=-1)),
         ).order_by('-rating')
         if user:
             qs = qs.annotate(vote=Subquery(AnswerVote.objects.filter(answer=OuterRef('pk'), user=user).values('vote')[:1]))
