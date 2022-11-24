@@ -62,5 +62,8 @@ class AnswerAdmin(admin.ModelAdmin):
     list_filter = ('user', 'publish', 'show_on_site')
     filter_horizontal = ('feelings',)
 
+    def get_queryset(self, request):
+        return super().get_queryset(request).filter(publish=True)
+
     def rating(self, obj):
         return obj.answervote_set.aggregate(rating=Sum('vote', default=0))['rating']
