@@ -165,7 +165,7 @@ class AnswerCreateView(AnswerFormMixin, CreateView):
         self.object.save()
         form.save_m2m()
         AnswerStatus.objects.get_or_create(user=self.request.user, question=self.object.question)
-        return HttpResponseRedirect(self.request.path)
+        return HttpResponseRedirect(self.object.question.get_absolute_url())
 
 
 class AnswerUpdateView(AnswerFormMixin, LoginRequiredMixin, UpdateView):
