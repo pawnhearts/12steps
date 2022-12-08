@@ -43,7 +43,8 @@ class Step(MetaDataBase, models.Model):
         return f'{self.sect}. Шаг {self.number}. {self.title}'
 
     def get_absolute_url(self):
-        return reverse('question-list', args=[self.pk])
+        return reverse('question-list', kwargs={'sect': self.sect_id, 'step': self.number})
+        # return reverse('question-list', args=[self.pk])
 
     def save(self, **kwargs):
         if not self.number:
@@ -67,7 +68,8 @@ class Section(MetaDataBase, models.Model):
         return f'{self.step.sect}. Шаг {self.step.number}. {self.title}'
 
     def get_absolute_url(self):
-        return reverse('section-detail', args=[self.pk])
+        return reverse('section-detail', kwargs={'sect': self.step.sect_id, 'section': self.number})
+        # return reverse('section-detail', args=[self.pk])
 
     def save(self, **kwargs):
         if not self.number:
@@ -101,8 +103,8 @@ class Question(MetaDataBase, models.Model):
         return f'{self.section.step.sect}. Шаг {self.section.step.number}. Раздел {self.section.title}. Вопрос {self.number}'
 
     def get_absolute_url(self):
-        return reverse('answer-create', args=[self.pk])
-        # return reverse('answer-create', kwargs={'sect': self.section.step.sect, 'step': self.section.step.pk, 'section': self.section.pk, 'pk': self.pk})
+        return reverse('answer-create', kwargs={'sect': self.section.step.sect_id, 'step': self.section.step.number, 'section': self.section.number, 'question': self.number})
+        # return reverse('answer-create', args=[self.pk])
 
     def save(self, **kwargs):
         if self.pre_text and not BeautifulSoup(self.pre_text, features="html.parser").text.strip():
