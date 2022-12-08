@@ -138,7 +138,8 @@ class AnswerCreateView(AnswerFormMixin, CreateView):
             Question.objects.select_related('section', 'section__step'),
             section__step__sect_id=self.kwargs.get('sect'),
             section__step__number=self.kwargs.get('step'),
-            question__number=self.kwargs.get('question')
+            section__number=self.kwargs.get('section'),
+            number=self.kwargs.get('question')
         )
         context['metadata'] = context['question'].get_metadata()
         context['examples'] = context['question'].get_examples(user=self.request.user if self.request.user.is_authenticated else None)
