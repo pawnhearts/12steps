@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'tinymce',
 
     "guide",
+    "seo",
 ]
 SITE_ID = env('SITE_ID', int, 1)
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -82,6 +83,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "guide.context_processors.programs",
+                "seo.context_processors.metadata",
             ],
         },
     },
