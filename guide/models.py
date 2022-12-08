@@ -68,7 +68,7 @@ class Section(MetaDataBase, models.Model):
         return f'{self.step.sect}. Шаг {self.step.number}. {self.title}'
 
     def get_absolute_url(self):
-        return reverse('section-detail', kwargs={'sect': self.step.sect_id, 'section': self.number})
+        return reverse('section-detail', kwargs={'sect': self.step.sect_id, 'step': self.step.number, 'section': self.number})
         # return reverse('section-detail', args=[self.pk])
 
     def save(self, **kwargs):
