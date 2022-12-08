@@ -88,7 +88,7 @@ class Question(models.Model):
         return f'{self.section.step.get_program_display()}. Шаг {self.section.step.number}. Раздел {self.section.title}. Вопрос {self.number}'
 
     def get_absolute_url(self):
-        return reverse('answer-create', args=[self.pk])
+        return reverse('answer-create', kwargs={'program': self.section.step.program, 'step': self.section.step.pk, 'section': self.section.pk, 'pk': self.pk})
 
     def save(self, **kwargs):
         if self.pre_text and not BeautifulSoup(self.pre_text, features="html.parser").text.strip():
