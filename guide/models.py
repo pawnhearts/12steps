@@ -13,11 +13,6 @@ class StepQuerySet(models.QuerySet):
         )
 
 
-class Programs(models.TextChoices):
-    NA = 'NA', 'Шаги АН по руководству'
-    AA = 'AA', 'Шаги АА'
-
-
 class Sect(models.Model):
     id = models.CharField('id', max_length=16, primary_key=True)
     title = models.CharField('Название', max_length=255)
@@ -35,27 +30,26 @@ class Step(models.Model):
     objects = StepQuerySet.as_manager()
 
     sect = models.ForeignKey(Sect, verbose_name='Программа', null=True, on_delete=models.CASCADE)
-    program = models.CharField('Программа', max_length=4, choices=Programs.choices, default=Programs.NA)
     number = models.PositiveSmallIntegerField('Номер', blank=True, db_index=True)
     title = models.CharField('Название', max_length=255)
     text = HTMLField('Текст', blank=True, null=True)
 
     def __str__(self):
-        return f'{self.get_program_display()}. Шаг {self.number}. {self.title}'
+        return f'{self.sect}. Шаг {self.number}. {self.title}'
 
     def get_absolute_url(self):
         return reverse('question-list', args=[self.pk])
 
     def save(self, **kwargs):
         if not self.number:
-            self.number = (Step.objects.filter(program=self.program).aggregate(n=models.Max('number'))['n'] or 0) + 1
+            self.number = (Step.objects.filter(sect=self.sect).aggregate(n=models.Max('number'))['n'] or 0) + 1
         super().save(**kwargs)
 
     class Meta:
         verbose_name = "Шаг"
         verbose_name_plural = "Шаги"
         ordering = ['number']
-        # unique_together = [['program', 'number']]
+        # unique_together = [['sect', 'number']]
 
 
 class Section(models.Model):
@@ -65,7 +59,7 @@ class Section(models.Model):
     # text = HTMLField('Текст', blank=True, null=True)
 
     def __str__(self):
-        return f'{self.step.get_program_display()}. Шаг {self.step.number}. {self.title}'
+        return f'{self.step.sect}. Шаг {self.step.number}. {self.title}'
 
     def get_absolute_url(self):
         return reverse('section-detail', args=[self.pk])
@@ -99,11 +93,11 @@ class Question(models.Model):
     post_text = HTMLField('Текст после вопроса', blank=True, null=True)
 
     def __str__(self):
-        return f'{self.section.step.get_program_display()}. Шаг {self.section.step.number}. Раздел {self.section.title}. Вопрос {self.number}'
+        return f'{self.section.step.sect}. Шаг {self.section.step.number}. Раздел {self.section.title}. Вопрос {self.number}'
 
     def get_absolute_url(self):
         return reverse('answer-create', args=[self.pk])
-        # return reverse('answer-create', kwargs={'program': self.section.step.program, 'step': self.section.step.pk, 'section': self.section.pk, 'pk': self.pk})
+        # return reverse('answer-create', kwargs={'sect': self.section.step.sect, 'step': self.section.step.pk, 'section': self.section.pk, 'pk': self.pk})
 
     def save(self, **kwargs):
         if self.pre_text and not BeautifulSoup(self.pre_text, features="html.parser").text.strip():

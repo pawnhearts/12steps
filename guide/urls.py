@@ -3,7 +3,7 @@ from django.urls import path, re_path
 from guide import views
 
 urlpatterns = [
-    path('steps/<str:program>/', views.StepListView.as_view(), name='step-list'),
+    path('steps/<str:sect>/', views.StepListView.as_view(), name='step-list'),
     # path('questions/<int:pk>/', views.SectionListView.as_view(), name='section-list'),
     path('steps/questions/<int:pk>/', views.QuestionListView.as_view(), name='question-list'),
     path('steps/section/<int:pk>/', views.SectionDetailView.as_view(), name='section-detail'),

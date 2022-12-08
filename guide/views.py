@@ -9,24 +9,20 @@ from django.views import View
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView, DetailView
 from django_select2 import forms as s2forms
 
-from guide.models import Step, Answer, Question, Feeling, AnswerStatus, AnswerStatuses, Programs, Section, AnswerVote
+from guide.models import Step, Answer, Question, Feeling, AnswerStatus, AnswerStatuses, Section, AnswerVote, \
+    Sect
 
 
 class StepListView(ListView):
     model = Step
 
     def get_queryset(self):
-        program = self.kwargs.get('program').upper()
-        if program not in ('AA', 'NA'):
-            raise Http404()
-        return super().get_queryset().filter(program=program)#.with_answer_count(self.request.user)
+        return super().get_queryset().filter(sect=self.kwargs.get('sect').upper())#.with_answer_count(self.request.user)
 
     def get_context_data(self, **kwargs):
-        program = self.kwargs.get('program').upper()
-        if program not in ('AA', 'NA'):
-            raise Http404()
+        sect = get_object_or_404(Sect, pk=self.kwargs.get('sect').upper())
         context = super().get_context_data(**kwargs)
-        context['program'] = dict(Programs.choices)[program]
+        context['sect'] = sect
         return context
 
 

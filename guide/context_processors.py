@@ -1,5 +1,5 @@
-from guide.models import Programs
+from guide.models import Sect
 
 
-def programs(request):
-    return {'programs': Programs.choices}
+def sects(request):
+    return {'sects': Sect.objects.all()}

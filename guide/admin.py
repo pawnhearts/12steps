@@ -30,7 +30,7 @@ class SectionInlineAdmin(admin.StackedInline):
 @admin.register(Step)
 class StepAdmin(admin.ModelAdmin):
     list_display = ('number', 'title')
-    list_filter = ('program',)
+    list_filter = ('sect',)
     inlines = (SectionInlineAdmin,)
 
 
@@ -41,14 +41,14 @@ class QuestionInlineAdmin(admin.StackedInline):
 @admin.register(Section)
 class SectionAdmin(admin.ModelAdmin):
     list_display = ('number', 'title')
-    list_filter = ('step__program', 'step')
+    list_filter = ('step__sect', 'step')
     inlines = (QuestionInlineAdmin,)
 
 
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
     list_display = ('__str__',)
-    list_filter = ('section__step__program', 'section__step', 'section')
+    list_filter = ('section__step__sect', 'section__step', 'section')
 
 
 @admin.register(Feeling)
