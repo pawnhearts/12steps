@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.db.models import Sum
 from django.urls import reverse
-from guide.models import Step, Question, Answer, Feeling, Section
+from guide.models import Step, Question, Answer, Feeling, Section, Sect
 from django.contrib.flatpages.admin import FlatPageAdmin
 from django.contrib.flatpages.models import FlatPage
 from tinymce.widgets import TinyMCE
@@ -67,3 +67,6 @@ class AnswerAdmin(admin.ModelAdmin):
 
     def rating(self, obj):
         return obj.answervote_set.aggregate(rating=Sum('vote', default=0))['rating']
+
+
+admin.site.register(Sect)
