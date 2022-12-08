@@ -25,6 +25,7 @@ admin.site.register(FlatPage, TinyMCEFlatPageAdmin)
 
 class SectionInlineAdmin(admin.StackedInline):
     model = Section
+    exclude = ['seo_title', 'seo_description', 'seo_keywords', 'seo_h1']
 
 
 @admin.register(Step)
@@ -36,6 +37,7 @@ class StepAdmin(admin.ModelAdmin):
 
 class QuestionInlineAdmin(admin.StackedInline):
     model = Question
+    exclude = ['seo_title', 'seo_description', 'seo_keywords', 'seo_h1']
 
 
 @admin.register(Section)
