@@ -17,9 +17,13 @@ class Sect(models.Model):
     id = models.CharField('id', max_length=16, primary_key=True)
     title = models.CharField('Название', max_length=255)
     text = HTMLField('Описание', blank=True, null=True)
+    is_visible = models.BooleanField('Показывать на сайте', default=False)
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('step-list', args=[self.pk])
 
     class Meta:
         verbose_name = "Программа"
