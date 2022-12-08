@@ -183,7 +183,7 @@ class AnswerUpdateView(AnswerFormMixin, LoginRequiredMixin, UpdateView):
         return context
 
     def get_success_url(self):
-        return f'/question/{self.object.question.pk}/'
+        return self.object.question.get_absolute_url()
 
 
 class AnswerDeleteView(LoginRequiredMixin, DeleteView):
@@ -196,7 +196,7 @@ class AnswerDeleteView(LoginRequiredMixin, DeleteView):
         return self.object
 
     def get_success_url(self):
-        return f'/question/{self.object.question_id}/'
+        return self.object.question.get_absolute_url()
 
 
 class AnswerCloseView(LoginRequiredMixin, View):
@@ -208,7 +208,7 @@ class AnswerCloseView(LoginRequiredMixin, View):
         else:
             answerstatus.status = AnswerStatuses.COMPLETED
         answerstatus.save()
-        return HttpResponseRedirect(reverse('answer-create', args=[question.pk]))
+        return HttpResponseRedirect(question.get_absolute_url())
 
 
 class AnswerVoteView(LoginRequiredMixin, View):
@@ -221,4 +221,4 @@ class AnswerVoteView(LoginRequiredMixin, View):
         else:
             vote.vote = val
             vote.save()
-        return HttpResponseRedirect(reverse('answer-create', args=[answer.question.pk]))
+        return HttpResponseRedirect(answer.question.get_absolute_url())
