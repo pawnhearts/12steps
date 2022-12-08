@@ -1,4 +1,4 @@
 <meta charset="utf-8">
-<title>{% if metadata.title %}{{ metadata.title }}{% else %}{{ request.site.name }}{% endif %}</title>
+<title>{% if metadata.title %}{{ metadata.title }}{% else %}{{ request.site }}{% endif %}</title>
 {% if metadata.description %}<meta name="description" content="{{ metadata.description }}"/>{% endif %}
 {% if metadata.keywords %}<meta name="keywords" content="{{ metadata.keywords }}"/>{% endif %}

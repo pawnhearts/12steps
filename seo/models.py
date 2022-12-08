@@ -8,6 +8,9 @@ class MetaData(models.Model):
     keywords = models.CharField(max_length=255, null=True, blank=True)
     h1 = models.CharField(max_length=255, null=True, blank=True)
 
+    def __str__(self):
+        return self.url
+
     class Meta:
         verbose_name = 'Мета теги'
         verbose_name_plural = 'Мета теги'
