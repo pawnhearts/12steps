@@ -131,16 +131,19 @@ class AnswerFormMixin:
 
 class AnswerCreateView(AnswerFormMixin, CreateView):
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # context['question'] = get_object_or_404(Question.objects.select_related('section', 'section__step'), pk=self.kwargs.get('pk'))
-        context['question'] = get_object_or_404(
+    def get_question(self):
+        return get_object_or_404(
             Question.objects.select_related('section', 'section__step'),
             section__step__sect_id=self.kwargs.get('sect'),
             section__step__number=self.kwargs.get('step'),
             section__number=self.kwargs.get('section'),
             number=self.kwargs.get('question')
         )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # context['question'] = get_object_or_404(Question.objects.select_related('section', 'section__step'), pk=self.kwargs.get('pk'))
+        context['question'] = self.get_question()
         context['metadata'] = context['question'].get_metadata()
         context['examples'] = context['question'].get_examples(user=self.request.user if self.request.user.is_authenticated else None)
         if self.request.user.is_authenticated:
@@ -157,7 +160,7 @@ class AnswerCreateView(AnswerFormMixin, CreateView):
         if not self.request.user.is_authenticated:
             raise PermissionDenied()
         self.object = form.save(commit=False)
-        self.object.question = get_object_or_404(Question, pk=self.kwargs.get('pk'))
+        self.object.question = self.get_question()
         self.object.user = self.request.user
         self.object.save()
         form.save_m2m()
