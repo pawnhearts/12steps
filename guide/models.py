@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Count, Q, Subquery, OuterRef
 from django.urls import reverse
+from seo.models import MetaDataBase
 from tinymce.models import HTMLField
 
 
@@ -13,7 +14,7 @@ class StepQuerySet(models.QuerySet):
         )
 
 
-class Sect(models.Model):
+class Sect(MetaDataBase, models.Model):
     id = models.CharField('id', max_length=16, primary_key=True)
     title = models.CharField('Название', max_length=255)
     text = HTMLField('Описание', blank=True, null=True)
@@ -30,7 +31,7 @@ class Sect(models.Model):
         verbose_name_plural = "Программы"
 
 
-class Step(models.Model):
+class Step(MetaDataBase, models.Model):
     objects = StepQuerySet.as_manager()
 
     sect = models.ForeignKey(Sect, verbose_name='Программа', null=True, on_delete=models.CASCADE)
@@ -56,7 +57,7 @@ class Step(models.Model):
         # unique_together = [['sect', 'number']]
 
 
-class Section(models.Model):
+class Section(MetaDataBase, models.Model):
     step = models.ForeignKey(Step, verbose_name='Шаг', on_delete=models.CASCADE)
     number = models.PositiveSmallIntegerField('Номер', blank=True, db_index=True)
     title = models.CharField('Название', max_length=256)
@@ -86,7 +87,7 @@ class QuestionQuerySet(models.QuerySet):
         return self.annotate(answer_count=Count('answer', filter=Q(answer__user=user)), status=sq)
 
 
-class Question(models.Model):
+class Question(MetaDataBase, models.Model):
     objects = QuestionQuerySet.as_manager()
 
     section = models.ForeignKey(Section, verbose_name='Раздел', on_delete=models.CASCADE)

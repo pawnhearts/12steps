@@ -23,6 +23,7 @@ class StepListView(ListView):
         sect = get_object_or_404(Sect, pk=self.kwargs.get('sect').upper())
         context = super().get_context_data(**kwargs)
         context['sect'] = sect
+        context['metadata'] = sect.get_metadata()
         return context
 
 
@@ -32,6 +33,7 @@ class QuestionListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['step'] = get_object_or_404(Step, pk=self.kwargs.get('pk'))
+        context['metadata'] = context['step'].get_metadata()
         return context
 
     def get_queryset(self):
@@ -48,6 +50,7 @@ class SectionListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['step'] = get_object_or_404(Step, pk=self.kwargs.get('pk'))
+        context['metadata'] = context['step'].get_metadata()
         return context
 
     def get_queryset(self):
@@ -63,6 +66,11 @@ class SectionListView(ListView):
 
 class SectionDetailView(DetailView):
     model = Section
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['metadata'] = self.object.get_metadata()
+        return context
 
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
@@ -115,6 +123,7 @@ class AnswerCreateView(AnswerFormMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['question'] = get_object_or_404(Question.objects.select_related('section', 'section__step'), pk=self.kwargs.get('pk'))
+        context['metadata'] = context['question'].get_metadata()
         context['examples'] = context['question'].get_examples(user=self.request.user if self.request.user.is_authenticated else None)
         if self.request.user.is_authenticated:
             context['show_close_button'] = True
@@ -149,6 +158,7 @@ class AnswerUpdateView(AnswerFormMixin, LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['question'] = self.object.question
+        context['metadata'] = context['question'].get_metadata()
         return context
 
     def get_success_url(self):

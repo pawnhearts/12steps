@@ -14,3 +14,16 @@ class MetaData(models.Model):
     class Meta:
         verbose_name = 'Мета теги'
         verbose_name_plural = 'Мета теги'
+
+
+class MetaDataBase(models.Model):
+    seo_title = models.CharField(max_length=68, null=True, blank=True)
+    seo_description = models.CharField(max_length=155, null=True, blank=True)
+    seo_keywords = models.CharField(max_length=255, null=True, blank=True)
+    seo_h1 = models.CharField(max_length=255, null=True, blank=True)
+
+    def get_metadata(self):
+        return {k: getattr(self, f'seo_{k}') for k in ('title', 'description', 'keywords', 'h1')}
+
+    class Meta:
+        abstract = True
