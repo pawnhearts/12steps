@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Count, Q, Subquery, OuterRef
+from django.urls import reverse
 from tinymce.models import HTMLField
 
 
@@ -28,6 +29,9 @@ class Step(models.Model):
     def __str__(self):
         return f'{self.get_program_display()}. Шаг {self.number}. {self.title}'
 
+    def get_absolute_url(self):
+        return reverse('question-list', args=[self.pk])
+
     def save(self, **kwargs):
         if not self.number:
             self.number = (Step.objects.filter(program=self.program).aggregate(n=models.Max('number'))['n'] or 0) + 1
@@ -48,6 +52,9 @@ class Section(models.Model):
 
     def __str__(self):
         return f'{self.step.get_program_display()}. Шаг {self.step.number}. {self.title}'
+
+    def get_absolute_url(self):
+        return reverse('section-detail', args=[self.pk])
 
     def save(self, **kwargs):
         if not self.number:
@@ -79,6 +86,9 @@ class Question(models.Model):
 
     def __str__(self):
         return f'{self.section.step.get_program_display()}. Шаг {self.section.step.number}. Раздел {self.section.title}. Вопрос {self.number}'
+
+    def get_absolute_url(self):
+        return reverse('answer-create', args=[self.pk])
 
     def save(self, **kwargs):
         if self.pre_text and not BeautifulSoup(self.pre_text, features="html.parser").text.strip():
@@ -131,6 +141,9 @@ class Answer(models.Model):
 
     def __str__(self):
         return f'{self.user} {self.question}'
+
+    def get_absolute_url(self):
+        return reverse('answer-update', args=[self.pk])
 
     class Meta:
         verbose_name = "Ответ"
