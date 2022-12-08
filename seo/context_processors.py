@@ -1,5 +1,3 @@
-from django.db.models.functions import Length
-
 from seo.models import MetaData
 
 
