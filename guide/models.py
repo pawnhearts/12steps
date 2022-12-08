@@ -54,7 +54,7 @@ class Step(MetaDataBase, models.Model):
         verbose_name = "Шаг"
         verbose_name_plural = "Шаги"
         ordering = ['number']
-        # unique_together = [['sect', 'number']]
+        unique_together = [['sect', 'number']]
 
 
 class Section(MetaDataBase, models.Model):
@@ -78,7 +78,7 @@ class Section(MetaDataBase, models.Model):
         verbose_name = "Раздел"
         verbose_name_plural = "Разделы"
         ordering = ['step__number', 'number']
-        # unique_together = [['step', 'number']]
+        unique_together = [['step', 'number']]
 
 
 class QuestionQuerySet(models.QuerySet):
@@ -127,7 +127,7 @@ class Question(MetaDataBase, models.Model):
         verbose_name = "Вопрос"
         verbose_name_plural = "Вопросы"
         ordering = ['section__step__number', 'section__number', 'number']
-        # unique_together = [['section', 'number']]
+        unique_together = [['section', 'number']]
 
 
 class Feeling(models.Model):
