@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
-{% block title %}12 шагов - {{ step.get_program_display }}{% endblock %}
+{% block title %}12 шагов - {{ step.sect }}{% endblock %}
 
 {% block nav %}
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'step-list' step.sect_id %}">{{ step.get_program_display }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ step.sect.get_absolute_url }}">{{ step.sect }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{{ step.title }}</li>
         </ol>
     </nav>
