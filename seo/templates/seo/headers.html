@@ -1,5 +1,5 @@
 <meta charset="utf-8">
 <meta http-equiv="content-language” content=”ru-ru”>
-<title>{{ metadata.title }}</title>
+<title>{% if metadata.title %}{{ metadata.title }}{% else %}{{ request.site.name }}{% endif %}</title>
 {% if metadata.description %}<meta name="description" content="{{ metadata.description }}"/>{% endif %}
 {% if metadata.keywords %}<meta name="keywords" content="{{ metadata.keywords }}"/>{% endif %}
