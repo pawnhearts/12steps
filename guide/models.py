@@ -18,9 +18,23 @@ class Programs(models.TextChoices):
     AA = 'AA', 'Шаги АА'
 
 
+class Sect(models.Model):
+    id = models.CharField('id', max_length=16, primary_key=True)
+    title = models.CharField('Название', max_length=255)
+    text = HTMLField('Описание', blank=True, null=True)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = "Программа"
+        verbose_name_plural = "Программы"
+
+
 class Step(models.Model):
     objects = StepQuerySet.as_manager()
 
+    sect = models.ForeignKey(Sect, verbose_name='Программа', null=True, on_delete=models.CASCADE)
     program = models.CharField('Программа', max_length=4, choices=Programs.choices, default=Programs.NA)
     number = models.PositiveSmallIntegerField('Номер', blank=True, db_index=True)
     title = models.CharField('Название', max_length=255)
