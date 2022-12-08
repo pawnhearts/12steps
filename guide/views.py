@@ -32,36 +32,41 @@ class QuestionListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['step'] = get_object_or_404(Step, pk=self.kwargs.get('pk'))
+        # context['step'] = get_object_or_404(Step, pk=self.kwargs.get('pk'))
+        context['step'] = get_object_or_404(Step, sect=self.kwargs.get('sect'), number=self.kwargs.get('step'))
         context['metadata'] = context['step'].get_metadata()
         return context
 
     def get_queryset(self):
-        qs = super().get_queryset().select_related('section').filter(section__step_id=self.kwargs.get('pk'))
+        # qs = super().get_queryset().select_related('section').filter(section__step_id=self.kwargs.get('pk'))
+        qs = super().get_queryset().select_related('section').filter(
+            section__step__sect_id=self.kwargs.get('sect'),
+            section__step__number=self.kwargs.get('step')
+        )
         if self.request.user.is_authenticated:
             qs = qs.with_answer_count(self.request.user)
         qs = qs.order_by('section__step__number', 'section__number', 'number')
         return qs
 
 
-class SectionListView(ListView):
-    model = Section
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['step'] = get_object_or_404(Step, pk=self.kwargs.get('pk'))
-        context['metadata'] = context['step'].get_metadata()
-        return context
-
-    def get_queryset(self):
-        qs = super().get_queryset().filter(step_id=self.kwargs.get('pk'))
-        if self.request.user.is_authenticated:
-            qs = qs.prefetch_related(Prefetch('question_set', queryset=Question.objects.with_answer_count(self.request.user).order_by('number')))
-            # for section in qs:
-            #     section.questions = section.question_set.all().with_answer_count(self.request.user)
-        else:
-            qs = qs.prefetch_related('question_set')
-        return qs
+# class SectionListView(ListView):
+#     model = Section
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['step'] = get_object_or_404(Step, pk=self.kwargs.get('pk'))
+#         context['metadata'] = context['step'].get_metadata()
+#         return context
+#
+#     def get_queryset(self):
+#         qs = super().get_queryset().filter(step_id=self.kwargs.get('pk'))
+#         if self.request.user.is_authenticated:
+#             qs = qs.prefetch_related(Prefetch('question_set', queryset=Question.objects.with_answer_count(self.request.user).order_by('number')))
+#             # for section in qs:
+#             #     section.questions = section.question_set.all().with_answer_count(self.request.user)
+#         else:
+#             qs = qs.prefetch_related('question_set')
+#         return qs
 
 
 class SectionDetailView(DetailView):
@@ -73,7 +78,13 @@ class SectionDetailView(DetailView):
         return context
 
     def get_object(self, queryset=None):
-        self.object = super().get_object(queryset)
+        # self.object = super().get_object(queryset)
+        self.object = get_object_or_404(
+            Section,
+            step__sect_id=self.kwargs.get('sect'),
+            step__number=self.kwargs.get('step'),
+            number=self.kwargs.get('section')
+        )
         if self.request.user.is_authenticated:
             self.object.questions = self.object.question_set.all().with_answer_count(self.request.user).order_by('number')
         return self.object
@@ -122,7 +133,13 @@ class AnswerCreateView(AnswerFormMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['question'] = get_object_or_404(Question.objects.select_related('section', 'section__step'), pk=self.kwargs.get('pk'))
+        # context['question'] = get_object_or_404(Question.objects.select_related('section', 'section__step'), pk=self.kwargs.get('pk'))
+        context['question'] = get_object_or_404(
+            Question.objects.select_related('section', 'section__step'),
+            section__step__sect_id=self.kwargs.get('sect'),
+            section__step__number=self.kwargs.get('step'),
+            question__number=self.kwargs.get('question')
+        )
         context['metadata'] = context['question'].get_metadata()
         context['examples'] = context['question'].get_examples(user=self.request.user if self.request.user.is_authenticated else None)
         if self.request.user.is_authenticated:
