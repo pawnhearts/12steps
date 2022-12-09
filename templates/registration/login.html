@@ -8,4 +8,5 @@
     {{ form|crispy }}
     <input type="submit" class="btn btn-success" value="Вход">
 </form>
+    <p>Забыли пароль? <a href="{% url 'password_reset' %}">Восстановить.</a></p>
 {% endblock %}
