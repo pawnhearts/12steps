@@ -51,8 +51,8 @@ INSTALLED_APPS = [
     "django_select2",
     'tinymce',
 
-    "guide",
-    "seo",
+    "guide.apps.GuideConfig",
+    "seo.apps.SeoConfig",
 ]
 SITE_ID = env('SITE_ID', int, 1)
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -157,9 +157,6 @@ EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = env('EMAIL_USE_TLS', bool, False)
 EMAIL_USE_SSL = env('EMAIL_USE_SSL', bool, True)
-
-from django.contrib.auth.views import PasswordResetView
-PasswordResetView.from_email = env('EMAIL_FROM')
 
 TINYMCE_DEFAULT_CONFIG = {
     "theme": "silver",
