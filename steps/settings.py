@@ -158,6 +158,9 @@ EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = env('EMAIL_USE_TLS', bool, False)
 EMAIL_USE_SSL = env('EMAIL_USE_SSL', bool, True)
 
+from django.contrib.auth.views import PasswordResetView
+PasswordResetView.from_email = env('EMAIL_FROM')
+
 TINYMCE_DEFAULT_CONFIG = {
     "theme": "silver",
     "height": 500,
