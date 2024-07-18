@@ -25,6 +25,8 @@ urlpatterns = [
     path("select2/", include("django_select2.urls")),
     path('tinymce/', include('tinymce.urls')),
     path("admin/", admin.site.urls),
+    path('api/', include('users.api.urls')),
+    path('api/', include('users.api.urls')),
     path('', flatpage, {'url': '/'}, name='index'),
     re_path(r'^(?P<url>.*/)$', flatpage),
 ]
