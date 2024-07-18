@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.flatpages',
     "django_registration",
+    'rest_framework',
     'oauth2_provider',
     "django_extensions",
     "crispy_forms",
@@ -170,4 +171,8 @@ TINYMCE_DEFAULT_CONFIG = {
     "bold italic underline backcolor | alignleft aligncenter "
     "alignright alignjustify | bullist numlist outdent indent | "
     "removeformat | link | help",
+}
+
+REST_FRAMEWORK = {
+
 }
