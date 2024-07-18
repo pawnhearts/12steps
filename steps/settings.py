@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
     "django_registration",
     'rest_framework',
-    'oauth2_provider',
     "django_extensions",
     "crispy_forms",
     "django_select2",

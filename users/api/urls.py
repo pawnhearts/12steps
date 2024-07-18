@@ -16,5 +16,4 @@ router.register(
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('auth/', include('oauth2_provider.urls', namespace='oauth2_provider')),
 ]
