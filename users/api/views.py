@@ -8,11 +8,6 @@ from django.contrib.auth.models import User
 
 from users.api.serializers import UserSerializer
 
-# from api.serialicccccccccccccccccccccccccc
-cccccccccccccccccccccccccccccccccccccccccccccccc
-cccccccccccccccccccccccccccccccccccc
-
-ccccccccccccccccccccccccccccccccccccccccccc
 
 
 class UserViewSet(viewsets.ViewSet):
