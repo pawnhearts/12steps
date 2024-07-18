@@ -6,7 +6,7 @@ from ..models import Sect
 
 
 class SectListAPIView(ListAPIView):
-    queryset = Sect.objects.filter(is_active=True)
+    queryset = Sect.objects.filter(is_visible=True)
     serializer_class = SectSerializer
 
 class QuestionListAPIView(ListAPIView):
