@@ -1,7 +1,7 @@
 from django.contrib.flatpages.models import FlatPage
 from rest_framework import serializers
 
-from guide.models import Sect, Question
+from guide.models import Sect, Question, Feeling
 
 
 class SectSerializer(serializers.ModelSerializer):
@@ -19,4 +19,10 @@ class QuestionSerializer(serializers.ModelSerializer):
 class FlatPageSerializer(serializers.ModelSerializer):
     class Meta:
         model = FlatPage
+        fields = '__all__'
+
+
+class FeelingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Feeling
         fields = '__all__'

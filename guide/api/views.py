@@ -1,7 +1,9 @@
 from django.contrib.flatpages.models import FlatPage
+from django.db.models import Q
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
-from rest_framework.generics import ListAPIView
-from .serializers import SectSerializer, QuestionSerializer, FlatPageSerializer
+from rest_framework.generics import ListAPIView, ListCreateAPIView
+from .serializers import SectSerializer, QuestionSerializer, FlatPageSerializer, FeelingSerializer
 from ..models import Sect, Question
 
 
@@ -25,8 +27,17 @@ class QuestionListAPIView(ListAPIView):
     serializer_class = QuestionSerializer
 
 
-
-
 class FlatPageListAPIView(ListAPIView):
     queryset = FlatPage.objects.all()
     serializer_class = FlatPageSerializer
+
+
+class FeelingListCreateAPIView(ListCreateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = FeelingSerializer
+
+    def get_queryset(self):
+        return self.queryset.filter(Q(user=None) | Q(user=self.request.user))
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
